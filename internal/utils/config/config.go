@@ -8,14 +8,21 @@ import (
 var Cfg Config
 
 type Config struct {
-	IsDevMode       bool   `mapstructure:"DEV_MODE"`
-	IsLogLevelDebug bool   `mapstructure:"LOG_LEVEL_DEBUG"`
-	IsJsonLogging   bool   `mapstructure:"JSON_LOGGING"`
 	ServiceName     string `mapstructure:"SERVICE_NAME"`
 	Port            string `mapstructure:"PORT"`
+	IsJsonLogging   bool   `mapstructure:"JSON_LOGGING"`
+	IsLogLevelDebug bool   `mapstructure:"LOG_LEVEL_DEBUG"`
+	IsDevMode       bool   `mapstructure:"DEV_MODE"`
 }
 
 func init() {
+
+	viper.SetDefault("SERVICE_NAME", "cng-hello-backend")
+	viper.SetDefault("PORT", "8080")
+	viper.SetDefault("JSON_LOGGING", true)
+	viper.SetDefault("LOG_LEVEL_DEBUG", false)
+	viper.SetDefault("DEV_MODE", false)
+
 	viper.AddConfigPath(".")
 	viper.SetConfigName("app")
 	viper.SetConfigType("env")
@@ -30,7 +37,6 @@ func init() {
 
 	//TODO: Does not work with env variable ..os.Getenv is working..
 	viper.AutomaticEnv()
-
 	err := viper.Unmarshal(&Cfg)
 	if err != nil {
 		panic("Could not unmarshal config")

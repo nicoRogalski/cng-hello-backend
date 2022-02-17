@@ -1,6 +1,8 @@
 package main
 
 import (
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 	"github.com/nicoRogalski/cng-hello-backend/internal/adapter/rest/handler"
 	"github.com/nicoRogalski/cng-hello-backend/internal/utils/config"
@@ -17,7 +19,8 @@ func main() {
 	logger.SetupGin(r)
 	tracer.SetupGin(r)
 	setupRoutes(r)
-	r.Run()
+
+	http.ListenAndServe(":"+config.Cfg.Port, r)
 }
 
 func setupRoutes(r *gin.Engine) {
