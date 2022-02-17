@@ -2,6 +2,12 @@
 
 Example cloud native application in Go.
 
+
+## Thougths on the project
+- Is Go ready to be used in the cloud enterprise environment ?
+- Can Go detach big ship backends like java ?
+
+
 ## Done
 - Base go file structure (https://github.com/golang-standards/project-layout)
 - Architecture (example: https://medium.com/@matiasvarela/hexagonal-architecture-in-go-cfd4e436faa3)
@@ -28,6 +34,10 @@ Example cloud native application in Go.
 - Add Gorm and implement persitance 
 - Add ressource only docker-compose for local development
 
+### Security
+- Add OIDC
+- Rest security with middleware (JWT validation)
+
 ### Rest
 - Add api as generated from openapi.yml 
 
@@ -46,3 +56,5 @@ Example cloud native application in Go.
 
 #### Watch out in the future:
 - https://github.com/open-telemetry/opentelemetry-go
+- GraphQL
+- Messageing (Kafka, Nats, RabbitMQ ...)
