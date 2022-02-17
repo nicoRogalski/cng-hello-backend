@@ -24,7 +24,7 @@ func init() {
 	} else {
 		zerolog.SetGlobalLevel(zerolog.InfoLevel)
 	}
-	
+
 	if !config.Cfg.IsJsonLogging {
 		log.Logger = log.Output(zerolog.ConsoleWriter{Out: os.Stderr})
 	}

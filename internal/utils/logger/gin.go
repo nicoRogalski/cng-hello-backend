@@ -17,7 +17,7 @@ type ginHands struct {
 	MsgStr     string
 }
 
-func SetupGinLogger(r *gin.Engine) {
+func SetupGin(r *gin.Engine) {
 	r.Use(logger())
 
 }
@@ -41,7 +41,7 @@ func logger() gin.HandlerFunc {
 			msg = "Request"
 		}
 		cData := &ginHands{
-			SerName:   config.Cfg.ServiceName,
+			SerName:    config.Cfg.ServiceName,
 			Path:       path,
 			Latency:    time.Since(t),
 			Method:     c.Request.Method,

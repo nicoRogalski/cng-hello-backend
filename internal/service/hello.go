@@ -16,7 +16,7 @@ func NewHelloService() *HelloService {
 	}
 }
 
-func (h HelloService) GetHelloMessage() *model.Message {
+func (h HelloService) GetMessage() *model.Message {
 	log.Info().Msg("Get message from service")
 	return h.helloRepository.GetMessage()
 }
