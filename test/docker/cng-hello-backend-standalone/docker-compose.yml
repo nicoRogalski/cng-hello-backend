@@ -1,0 +1,27 @@
+# For demo purposes
+services:
+  cng-hello-backend:
+    image: cng-hello-backend:1.0.0
+    ports:
+      - "8080:8080"
+    environment:
+      JAEGER_ENDPOINT: "http://jaeger:14268/api/traces"
+      PORT: "8080"
+      DEV_MODE: "false"
+      SERVICE_NAME: "cng-hello-backend"
+    depends_on:
+      - prometheus
+      - jaeger
+
+  prometheus:
+    image: prom/prometheus:v2.25.2
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+
+  jaeger:
+    image: jaegertracing/all-in-one:1.22.0
+    ports:
+      - "16686:16686"
+      - "14268:14268"

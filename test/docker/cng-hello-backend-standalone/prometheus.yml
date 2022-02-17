@@ -1,0 +1,5 @@
+scrape_configs:
+- job_name: cng-hello-backend
+  scrape_interval: 5s
+  static_configs:
+  - targets: ['cng-hello-backend:8080']

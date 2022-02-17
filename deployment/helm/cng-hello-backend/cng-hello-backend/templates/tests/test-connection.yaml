@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "cng-hello-backend.fullname" . }}-test-connection"
+  labels:
+    {{- include "cng-hello-backend.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['{{ include "cng-hello-backend.fullname" . }}:{{ .Values.service.port }}']
+  restartPolicy: Never
