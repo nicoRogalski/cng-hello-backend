@@ -19,9 +19,14 @@ func init() {
 
 	zerolog.TimeFieldFormat = zerolog.TimeFormatUnix
 
-	zerolog.SetGlobalLevel(zerolog.InfoLevel)
-	if config.Cfg.DevMode {
+	if config.Cfg.IsLogLevelDebug {
 		zerolog.SetGlobalLevel(zerolog.DebugLevel)
+	} else {
+		zerolog.SetGlobalLevel(zerolog.InfoLevel)
+	}
+	
+	if !config.Cfg.IsJsonLogging {
 		log.Logger = log.Output(zerolog.ConsoleWriter{Out: os.Stderr})
 	}
+
 }

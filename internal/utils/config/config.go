@@ -8,9 +8,11 @@ import (
 var Cfg Config
 
 type Config struct {
-	DevMode     bool   `mapstructure:"DEV_MODE"`
-	ServiceName string `mapstructure:"SERVICE_NAME"`
-	Port        string `mapstructure:"PORT"`
+	IsDevMode       bool   `mapstructure:"DEV_MODE"`
+	IsLogLevelDebug bool   `mapstructure:"LOG_LEVEL_DEBUG"`
+	IsJsonLogging   bool   `mapstructure:"JSON_LOGGING"`
+	ServiceName     string `mapstructure:"SERVICE_NAME"`
+	Port            string `mapstructure:"PORT"`
 }
 
 func init() {

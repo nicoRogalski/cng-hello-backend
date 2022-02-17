@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	if !config.Cfg.DevMode {
+	if !config.Cfg.IsDevMode {
 		gin.SetMode(gin.ReleaseMode)
 	}
 
