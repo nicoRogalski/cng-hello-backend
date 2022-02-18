@@ -2,6 +2,21 @@
 
 Example cloud native application in Go.
 
+## How to run:
+### Local
+```
+$ go run .\cmd\app.go
+```
+### docker-compose
+```
+$  docker build -f build/package/docker/Dockerfile -t cng-hello-backend:1.0.0 .
+
+$ cd test/docker/cng-hello-backend
+
+$ docker-compose up
+```
+
+#
 
 ## Thougths on the project
 - Is Go ready to be used in the cloud enterprise environment ?
@@ -24,6 +39,7 @@ Example cloud native application in Go.
 
 ## In progress:
 - Health endpoints with readiness and live checks.
+- Versioning
 
 #
 
