@@ -11,3 +11,15 @@ func GetHealth(c *gin.Context) {
 		Status: "UP",
 	})
 }
+
+func GetReadiness(c *gin.Context) {
+	c.JSON(200, &Health{
+		Status: "UP",
+	})
+}
+
+func GetLiveness(c *gin.Context) {
+	c.JSON(200, &Health{
+		Status: "UP",
+	})
+}

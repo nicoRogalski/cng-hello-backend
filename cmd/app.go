@@ -25,8 +25,14 @@ func main() {
 }
 
 func setupRoutes(r *gin.Engine) {
-	r.GET("/health", handler.GetHealth)
 	r.GET("/metrics", handler.GetMetrics)
+
+	health := r.Group("/health")
+	{
+		health.GET("/", handler.GetHealth)
+		health.GET("/readiness", handler.GetReadiness)
+		health.GET("/liveness", handler.GetLiveness)
+	}
 
 	api := r.Group("/api")
 	v1 := api.Group("/v1")

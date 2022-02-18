@@ -35,13 +35,11 @@ $ docker-compose up
 - Tracing for jeager (https://github.com/open-telemetry/opentelemetry-go/tree/main/exporters/jaeger)
 - Tracing of gin (https://github.com/open-telemetry/opentelemetry-go-contrib/tree/main/instrumentation/github.com/gin-gonic/gin/otelgin)
 - JWT validation (https://github.com/golang-jwt/jwt)
+- Implement readiness and live checks
 
 # 
 
 ## In progress:
-### General
-- Health endpoints with readiness and live checks.
-- Versioning
 
 ### Security
 - Implement parsing of jwt secret from oidc provider
