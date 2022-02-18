@@ -63,6 +63,7 @@ $ docker-compose up
 
 ## Known issues:
 - Viper does not automaticaly uses env vars
+- Service name in jeager is not set properly.
 
 #
 
