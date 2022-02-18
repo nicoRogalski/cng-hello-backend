@@ -5,6 +5,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/rogalni/cng-hello-backend/internal/adapter/rest/handler"
+	"github.com/rogalni/cng-hello-backend/internal/middleware"
 	"github.com/rogalni/cng-hello-backend/internal/utils/config"
 	"github.com/rogalni/cng-hello-backend/internal/utils/logger"
 	"github.com/rogalni/cng-hello-backend/internal/utils/tracer"
@@ -32,5 +33,9 @@ func setupRoutes(r *gin.Engine) {
 	{
 		v1.GET("/hello", handler.GetHello)
 	}
-
+	v2 := api.Group("/v2")
+	v2.Use(middleware.AuthorizeJWT())
+	{
+		v2.GET("/hello", handler.GetHello)
+	}
 }

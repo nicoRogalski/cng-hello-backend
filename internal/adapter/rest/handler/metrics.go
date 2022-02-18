@@ -8,4 +8,5 @@ import (
 func GetMetrics(c *gin.Context) {
 	h := promhttp.Handler()
 	h.ServeHTTP(c.Writer, c.Request)
+
 }

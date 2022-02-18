@@ -13,10 +13,11 @@ type Config struct {
 	IsJsonLogging   bool   `mapstructure:"JSON_LOGGING"`
 	IsLogLevelDebug bool   `mapstructure:"LOG_LEVEL_DEBUG"`
 	IsDevMode       bool   `mapstructure:"DEV_MODE"`
+	JwtCertUrl      string `mapstructure:"JWT_CERT_URL"`
+	JwtSecret       string `mapstructure:"JWT_SECRET"`
 }
 
 func init() {
-
 	viper.SetDefault("SERVICE_NAME", "cng-hello-backend")
 	viper.SetDefault("PORT", "8080")
 	viper.SetDefault("JSON_LOGGING", true)
@@ -37,8 +38,10 @@ func init() {
 
 	//TODO: Does not work with env variable ..os.Getenv is working..
 	viper.AutomaticEnv()
+
 	err := viper.Unmarshal(&Cfg)
 	if err != nil {
 		panic("Could not unmarshal config")
 	}
 }
+

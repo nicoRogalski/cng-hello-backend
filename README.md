@@ -34,12 +34,17 @@ $ docker-compose up
 - Added Grafana
 - Tracing for jeager (https://github.com/open-telemetry/opentelemetry-go/tree/main/exporters/jaeger)
 - Tracing of gin (https://github.com/open-telemetry/opentelemetry-go-contrib/tree/main/instrumentation/github.com/gin-gonic/gin/otelgin)
+- JWT validation (https://github.com/golang-jwt/jwt)
 
 # 
 
 ## In progress:
+### General
 - Health endpoints with readiness and live checks.
 - Versioning
+
+### Security
+- Implement parsing of jwt secret from oidc provider
 
 #
 
@@ -49,10 +54,6 @@ $ docker-compose up
 - Setup Table with a migration tool
 - Add Gorm and implement persitance 
 - Add ressource only docker-compose for local development
-
-### Security
-- Add OIDC
-- Rest security with middleware (JWT validation)
 
 ### Rest
 - Add api as generated from openapi.yml 
