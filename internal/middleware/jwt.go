@@ -12,7 +12,7 @@ import (
 const BEARER_SCHEMA = "Bearer"
 const AUTH_HEADER = "Authorization"
 
-func AuthorizeJWT() gin.HandlerFunc {
+func ValidateJWT() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		authHeader := c.GetHeader(AUTH_HEADER)
 		if authHeader == "" {

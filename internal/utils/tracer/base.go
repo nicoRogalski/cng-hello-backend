@@ -4,6 +4,7 @@ import (
 	"context"
 	"os"
 
+	"github.com/rogalni/cng-hello-backend/internal/utils/config"
 	"github.com/rs/zerolog/log"
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/exporters/jaeger"
@@ -13,6 +14,9 @@ import (
 )
 
 func init() {
+	if config.Cfg.IsDevMode {
+		return
+	}
 
 	exp, err := jaeger.New(jaeger.WithCollectorEndpoint(jaeger.WithEndpoint(os.Getenv("JAEGER_ENDPOINT"))))
 	if err != nil {

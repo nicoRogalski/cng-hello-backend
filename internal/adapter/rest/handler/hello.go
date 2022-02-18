@@ -14,9 +14,21 @@ type HelloController interface {
 }
 
 func GetHello(c *gin.Context) {
+	span := tracer.Start(c.Request.Context(), "GetHello")
+	defer span.End()
+	hs := service.NewHelloService()
+	m := hs.GetMessage()
+	c.IndentedJSON(200, &dto.Message{
+		Id:   m.Id,
+		Code: m.Code,
+		Text: m.Text,
+	})
+}
+
+func GetHelloSecure(c *gin.Context) {
 	role := utils.GetJWTRole(c)
 	log.Info().Msgf("Authorized with role: %s", role)
-	span := tracer.Start(c.Request.Context(), "GetHello")
+	span := tracer.Start(c.Request.Context(), "GetHelloSecure")
 	defer span.End()
 	hs := service.NewHelloService()
 	m := hs.GetMessage()

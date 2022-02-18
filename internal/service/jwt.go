@@ -31,5 +31,4 @@ func ValidateToken(encodedToken string) (*jwt.Token, error) {
 		}
 		return []byte(secret), nil
 	})
-
 }
