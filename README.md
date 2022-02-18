@@ -31,7 +31,7 @@ $ docker-compose up
 - Logger for json logging (https://github.com/rs/zerolog)
 - Rest-Api (https://github.com/gin-gonic/gin)
 - Monitoring endpoint for prometheus (https://github.com/prometheus/client_golang)
-- Added Grafana
+- Grafana
 - Tracing for jeager (https://github.com/open-telemetry/opentelemetry-go/tree/main/exporters/jaeger)
 - Tracing of gin (https://github.com/open-telemetry/opentelemetry-go-contrib/tree/main/instrumentation/github.com/gin-gonic/gin/otelgin)
 - JWT validation (https://github.com/golang-jwt/jwt)
@@ -61,7 +61,7 @@ $ docker-compose up
 
 # 
 
-## To be fixed:
+## Known issues:
 - Viper does not automaticaly uses env vars
 
 #
