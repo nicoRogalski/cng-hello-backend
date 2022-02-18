@@ -1,7 +1,7 @@
 package repository
 
 import (
-	"github.com/nicoRogalski/cng-hello-backend/internal/adapter/db/model"
+	"github.com/rogalni/cng-hello-backend/internal/adapter/db/model"
 	"github.com/rs/zerolog/log"
 )
 

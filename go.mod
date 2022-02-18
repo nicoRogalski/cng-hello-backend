@@ -1,4 +1,4 @@
-module github.com/nicoRogalski/cng-hello-backend
+module github.com/rogalni/cng-hello-backend
 
 go 1.17
 

@@ -2,9 +2,9 @@ package handler
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/nicoRogalski/cng-hello-backend/internal/adapter/rest/dto"
-	"github.com/nicoRogalski/cng-hello-backend/internal/service"
-	"github.com/nicoRogalski/cng-hello-backend/internal/utils/tracer"
+	"github.com/rogalni/cng-hello-backend/internal/adapter/rest/dto"
+	"github.com/rogalni/cng-hello-backend/internal/service"
+	"github.com/rogalni/cng-hello-backend/internal/utils/tracer"
 )
 
 func GetHello(c *gin.Context) {

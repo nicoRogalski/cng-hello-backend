@@ -2,7 +2,7 @@ package tracer
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/nicoRogalski/cng-hello-backend/internal/utils/config"
+	"github.com/rogalni/cng-hello-backend/internal/utils/config"
 	"go.opentelemetry.io/contrib/instrumentation/github.com/gin-gonic/gin/otelgin"
 )
 

@@ -4,10 +4,10 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/nicoRogalski/cng-hello-backend/internal/adapter/rest/handler"
-	"github.com/nicoRogalski/cng-hello-backend/internal/utils/config"
-	"github.com/nicoRogalski/cng-hello-backend/internal/utils/logger"
-	"github.com/nicoRogalski/cng-hello-backend/internal/utils/tracer"
+	"github.com/rogalni/cng-hello-backend/internal/adapter/rest/handler"
+	"github.com/rogalni/cng-hello-backend/internal/utils/config"
+	"github.com/rogalni/cng-hello-backend/internal/utils/logger"
+	"github.com/rogalni/cng-hello-backend/internal/utils/tracer"
 )
 
 func main() {

@@ -4,7 +4,7 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/nicoRogalski/cng-hello-backend/internal/utils/config"
+	"github.com/rogalni/cng-hello-backend/internal/utils/config"
 	"github.com/rs/zerolog/log"
 )
 

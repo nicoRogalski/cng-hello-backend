@@ -3,7 +3,7 @@ package logger
 import (
 	"os"
 
-	"github.com/nicoRogalski/cng-hello-backend/internal/utils/config"
+	"github.com/rogalni/cng-hello-backend/internal/utils/config"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 )

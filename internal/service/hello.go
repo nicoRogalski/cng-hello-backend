@@ -1,8 +1,8 @@
 package service
 
 import (
-	"github.com/nicoRogalski/cng-hello-backend/internal/adapter/db/model"
-	"github.com/nicoRogalski/cng-hello-backend/internal/adapter/db/repository"
+	"github.com/rogalni/cng-hello-backend/internal/adapter/db/model"
+	"github.com/rogalni/cng-hello-backend/internal/adapter/db/repository"
 	"github.com/rs/zerolog/log"
 )
 
