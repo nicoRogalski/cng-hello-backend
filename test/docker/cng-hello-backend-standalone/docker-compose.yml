@@ -1,7 +1,7 @@
 # For demo purposes
 services:
   cng-hello-backend:
-    image: cng-hello-backend:1.0.0
+    image: cng-hello-backend
     ports:
       - "8080:8080"
     environment:

@@ -32,7 +32,7 @@ RUN echo "adding run user go to system" \
 
 COPY --from=builder /dist/main /
 
-USER go
+USER 1000
 
 EXPOSE 8080
 

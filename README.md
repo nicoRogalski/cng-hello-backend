@@ -9,7 +9,7 @@ $ go run .\cmd\app.go
 ```
 ### docker-compose
 ```
-$  docker build -f build/package/docker/Dockerfile -t cng-hello-backend:1.0.0 .
+$  docker build -f build/package/docker/Dockerfile -t cng-hello-backend .
 
 $ cd test/docker/cng-hello-backend
 
@@ -21,7 +21,6 @@ $ docker-compose up
 ## Thougths on the project
 - Is Go ready to be used in the cloud enterprise environment ?
 - Can Go detach big ship backends like java ?
-
 
 ## Done
 - Base go file structure (https://github.com/golang-standards/project-layout)
