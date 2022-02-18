@@ -41,17 +41,22 @@ $ docker-compose up
 
 ## In progress:
 
+### Database
+- Add postgress to docker-compose and add required envs
+
 ### Security
 - Implement parsing of jwt secret from oidc provider
+
+### Monitoring
+- Setup grafana that the dashboard is predefined
 
 #
 
 ## To be done:
+
 ### Database
-- Add postgress to docker-compose
 - Setup Table with a migration tool
 - Add Gorm and implement persitance 
-- Add ressource only docker-compose for local development
 
 ### Rest
 - Add api as generated from openapi.yml 
