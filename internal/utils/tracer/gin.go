@@ -6,6 +6,10 @@ import (
 	"go.opentelemetry.io/contrib/instrumentation/github.com/gin-gonic/gin/otelgin"
 )
 
-func SetupGin(r *gin.Engine) {
+func ForGroup(r *gin.RouterGroup) {
+	r.Use(otelgin.Middleware(config.Cfg.ServiceName))
+}
+
+func ForEngine(r *gin.Engine) {
 	r.Use(otelgin.Middleware(config.Cfg.ServiceName))
 }

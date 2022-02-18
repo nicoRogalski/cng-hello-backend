@@ -5,7 +5,11 @@ import (
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
-func GetMetrics(c *gin.Context) {
+func SetupMetrics(r *gin.Engine) {
+	r.GET("/metrics", getMetrics)
+}
+
+func getMetrics(c *gin.Context) {
 	h := promhttp.Handler()
 	h.ServeHTTP(c.Writer, c.Request)
 

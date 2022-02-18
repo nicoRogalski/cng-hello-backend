@@ -6,19 +6,28 @@ type Health struct {
 	Status string `json:"status"`
 }
 
-func GetHealth(c *gin.Context) {
+func SetupHealth(r *gin.Engine) {
+	health := r.Group("/health")
+	{
+		health.GET("/", getHealth)
+		health.GET("/readiness", getReadiness)
+		health.GET("/liveness", getLiveness)
+	}
+}
+
+func getHealth(c *gin.Context) {
 	c.JSON(200, &Health{
 		Status: "UP",
 	})
 }
 
-func GetReadiness(c *gin.Context) {
+func getReadiness(c *gin.Context) {
 	c.JSON(200, &Health{
 		Status: "UP",
 	})
 }
 
-func GetLiveness(c *gin.Context) {
+func getLiveness(c *gin.Context) {
 	c.JSON(200, &Health{
 		Status: "UP",
 	})
