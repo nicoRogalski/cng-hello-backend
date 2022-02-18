@@ -44,4 +44,3 @@ func init() {
 		panic("Could not unmarshal config")
 	}
 }
-
