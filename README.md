@@ -5,15 +5,15 @@ Example cloud native application in Go.
 ## How to run:
 ### Local
 ```
-$ go run .\cmd\app.go
+go run .\cmd\app.go
 ```
 ### docker-compose
 ```
-$  docker build -f build/package/docker/Dockerfile -t cng-hello-backend .
+docker build -f build/package/docker/Dockerfile -t cng-hello-backend .
 
-$ cd test/docker/cng-hello-backend
+cd test/docker/cng-hello-backend
 
-$ docker-compose up
+docker-compose up
 ```
 
 #

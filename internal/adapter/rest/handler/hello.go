@@ -12,6 +12,11 @@ import (
 func GetHello(c *gin.Context) {
 	span := tracer.Start(c.Request.Context(), "handler.GetHello")
 	defer span.End()
+	log.Info().
+		Str("trace", span.SpanContext().TraceID().String()).
+		Str("span", span.SpanContext().SpanID().String()).
+		Msg("Get Hello in new span")
+
 	hs := service.NewHelloService()
 	m := hs.GetMessage(c.Request.Context())
 	c.IndentedJSON(200, &dto.Message{
