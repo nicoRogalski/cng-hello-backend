@@ -2,7 +2,6 @@ package tracer
 
 import (
 	"context"
-	"os"
 
 	"github.com/rogalni/cng-hello-backend/internal/utils/config"
 	"github.com/rs/zerolog/log"
@@ -17,11 +16,11 @@ import (
 )
 
 func init() {
-	if config.Cfg.IsDevMode {
+	if config.App.IsDevMode {
 		return
 	}
 
-	exp, err := jaeger.New(jaeger.WithCollectorEndpoint(jaeger.WithEndpoint(os.Getenv("JAEGER_ENDPOINT"))))
+	exp, err := jaeger.New(jaeger.WithCollectorEndpoint(jaeger.WithEndpoint(config.App.JaegerEndpoint)))
 
 	if err != nil {
 		log.Fatal().Err(err)
@@ -31,7 +30,7 @@ func init() {
 		sdktrace.WithBatcher(exp),
 		sdktrace.WithResource(resource.NewSchemaless(attribute.KeyValue{
 			Key:   semconv.ServiceNameKey,
-			Value: attribute.StringValue(config.Cfg.ServiceName),
+			Value: attribute.StringValue(config.App.ServiceName),
 		})),
 	)
 	otel.SetTracerProvider(tp)

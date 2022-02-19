@@ -12,16 +12,15 @@ import (
 )
 
 func main() {
-	if !config.Cfg.IsDevMode {
+	if !config.App.IsDevMode {
 		gin.SetMode(gin.ReleaseMode)
 	}
 
 	r := gin.New()
 	logger.SetupGin(r)
-
 	setupRoutes(r)
 
-	http.ListenAndServe(":"+config.Cfg.Port, r)
+	http.ListenAndServe(":"+config.App.Port, r)
 }
 
 func setupRoutes(r *gin.Engine) {

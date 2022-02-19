@@ -41,7 +41,7 @@ func logger() gin.HandlerFunc {
 			msg = "Request"
 		}
 		cData := &ginHands{
-			SerName:    config.Cfg.ServiceName,
+			SerName:    config.App.ServiceName,
 			Path:       path,
 			Latency:    time.Since(t),
 			Method:     c.Request.Method,

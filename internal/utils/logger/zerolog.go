@@ -12,20 +12,20 @@ func init() {
 	// Setting up the default logger
 	log.Logger = zerolog.New(os.Stderr).
 		With().
-		Str("server", config.Cfg.ServiceName).
+		Str("server", config.App.ServiceName).
 		Timestamp().
 		Caller().
 		Logger()
 
 	zerolog.TimeFieldFormat = zerolog.TimeFormatUnix
 
-	if config.Cfg.IsLogLevelDebug {
+	if config.App.IsLogLevelDebug {
 		zerolog.SetGlobalLevel(zerolog.DebugLevel)
 	} else {
 		zerolog.SetGlobalLevel(zerolog.InfoLevel)
 	}
 
-	if !config.Cfg.IsJsonLogging {
+	if !config.App.IsJsonLogging {
 		log.Logger = log.Output(zerolog.ConsoleWriter{Out: os.Stderr})
 	}
 

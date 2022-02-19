@@ -41,8 +41,6 @@ $ docker-compose up
 
 ## In progress:
 
-### Database
-- Add postgress to docker-compose and add required envs
 
 ### Security
 - Implement parsing of jwt secret from oidc provider
@@ -67,7 +65,6 @@ $ docker-compose up
 # 
 
 ## Known issues:
-- Viper does not automaticaly uses env vars
 
 #
 

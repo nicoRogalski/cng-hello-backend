@@ -7,9 +7,9 @@ import (
 )
 
 func ForGroup(r *gin.RouterGroup) {
-	r.Use(otelgin.Middleware(config.Cfg.ServiceName))
+	r.Use(otelgin.Middleware(config.App.ServiceName))
 }
 
 func ForEngine(r *gin.Engine) {
-	r.Use(otelgin.Middleware(config.Cfg.ServiceName))
+	r.Use(otelgin.Middleware(config.App.ServiceName))
 }

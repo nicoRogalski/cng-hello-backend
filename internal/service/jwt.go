@@ -10,9 +10,9 @@ import (
 var secret string
 
 func init() {
-	js := config.Cfg.JwtSecret
+	js := config.App.JwtSecret
 	if js == "" {
-		// _, err := http.Get(config.Cfg.JwtCertUrl)
+		// _, err := http.Get(config.App.JwtCertUrl)
 		// if err != nil {
 		// 	log.Warn().Msg("Could not fetch JWT Certificate")
 		// }

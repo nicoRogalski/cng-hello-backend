@@ -5,7 +5,7 @@ import (
 	"github.com/spf13/viper"
 )
 
-var Cfg Config
+var App Config
 
 type Config struct {
 	ServiceName     string `mapstructure:"SERVICE_NAME"`
@@ -15,6 +15,11 @@ type Config struct {
 	IsDevMode       bool   `mapstructure:"DEV_MODE"`
 	JwtCertUrl      string `mapstructure:"JWT_CERT_URL"`
 	JwtSecret       string `mapstructure:"JWT_SECRET"`
+	JaegerEndpoint  string `mapstructure:"JAEGER_ENDPOINT"`
+	PostgresHost    string `mapstructure:"POSTGRES_HOST"`
+	PostgresUser    string `mapstructure:"POSTGRES_USER"`
+	PostresPassword string `mapstructure:"POSTGRES_PASSWORD"`
+	PostgresDb      string `mapstructure:"POSTGRES_DB"`
 }
 
 func init() {
@@ -23,6 +28,11 @@ func init() {
 	viper.SetDefault("JSON_LOGGING", true)
 	viper.SetDefault("LOG_LEVEL_DEBUG", false)
 	viper.SetDefault("DEV_MODE", false)
+	viper.SetDefault("JAEGER_ENDPOINT", "")
+	viper.SetDefault("POSTGRES_HOST", "")
+	viper.SetDefault("POSTGRES_USER", "")
+	viper.SetDefault("POSTGRES_PASSWORD", "")
+	viper.SetDefault("POSTGRES_DB", "")
 
 	viper.AddConfigPath(".")
 	viper.SetConfigName("app")
@@ -36,10 +46,9 @@ func init() {
 		}
 	}
 
-	//TODO: Does not work with env variable ..os.Getenv is working..
 	viper.AutomaticEnv()
 
-	err := viper.Unmarshal(&Cfg)
+	err := viper.Unmarshal(&App)
 	if err != nil {
 		panic("Could not unmarshal config")
 	}
