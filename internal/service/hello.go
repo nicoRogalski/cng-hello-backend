@@ -1,9 +1,11 @@
 package service
 
 import (
+	"context"
+
 	"github.com/rogalni/cng-hello-backend/internal/adapter/db/model"
 	"github.com/rogalni/cng-hello-backend/internal/adapter/db/repository"
-	"github.com/rs/zerolog/log"
+	"github.com/rogalni/cng-hello-backend/internal/pkg/logger"
 )
 
 type HelloService struct {
@@ -16,7 +18,7 @@ func NewHelloService() *HelloService {
 	}
 }
 
-func (h HelloService) GetMessage() *model.Message {
-	log.Info().Msg("Get message from service")
+func (h HelloService) GetMessage(ctx context.Context) *model.Message {
+	logger.InfoWithTrace(ctx).Msg("Get message from service")
 	return h.helloRepository.GetMessage()
 }

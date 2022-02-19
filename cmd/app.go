@@ -34,8 +34,8 @@ func setupRoutes(r *gin.Engine) {
 	handler.SetupHealth(r)
 
 	api := r.Group("/api")
-	logger.ForGroup(api)
 	tracer.ForGroup(api)
+	logger.ForGroup(api)
 	{
 		v1 := api.Group("/v1")
 		{

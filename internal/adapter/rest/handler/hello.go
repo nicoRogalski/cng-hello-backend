@@ -9,15 +9,11 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
-type HelloController interface {
-	GetHello(c *gin.Context)
-}
-
 func GetHello(c *gin.Context) {
-	span := tracer.Start(c.Request.Context(), "GetHello")
+	span := tracer.Start(c.Request.Context(), "handler.GetHello")
 	defer span.End()
 	hs := service.NewHelloService()
-	m := hs.GetMessage()
+	m := hs.GetMessage(c.Request.Context())
 	c.IndentedJSON(200, &dto.Message{
 		Id:   m.Id,
 		Code: m.Code,
@@ -31,7 +27,7 @@ func GetHelloSecure(c *gin.Context) {
 	span := tracer.Start(c.Request.Context(), "GetHelloSecure")
 	defer span.End()
 	hs := service.NewHelloService()
-	m := hs.GetMessage()
+	m := hs.GetMessage(c.Request.Context())
 	c.IndentedJSON(200, &dto.Message{
 		Id:   m.Id,
 		Code: m.Code,

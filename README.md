@@ -34,13 +34,13 @@ $ docker-compose up
 - Grafana
 - Tracing for jeager (https://github.com/open-telemetry/opentelemetry-go/tree/main/exporters/jaeger)
 - Tracing of gin (https://github.com/open-telemetry/opentelemetry-go-contrib/tree/main/instrumentation/github.com/gin-gonic/gin/otelgin)
+- Trace and spanId in logs
 - JWT validation (https://github.com/golang-jwt/jwt)
 - Implement readiness and live checks
 
 # 
 
 ## In progress:
-
 
 ### Security
 - Implement parsing of jwt secret from oidc provider
@@ -58,9 +58,6 @@ $ docker-compose up
 
 ### Rest
 - Add api as generated from openapi.yml 
-
-### Tracing
-- Add trace and span in logger
 
 # 
 
