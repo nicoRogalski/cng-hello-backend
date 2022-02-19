@@ -4,7 +4,7 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/rogalni/cng-hello-backend/internal/utils/config"
+	"github.com/rogalni/cng-hello-backend/config"
 	"github.com/rs/zerolog/log"
 )
 
@@ -17,10 +17,14 @@ type ginHands struct {
 	MsgStr     string
 }
 
-func SetupGin(r *gin.Engine) {
+func ForGroup(r *gin.RouterGroup) {
 	r.Use(logger())
-
 }
+
+func ForEngine(r *gin.Engine) {
+	r.Use(logger())
+}
+
 func logger() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		t := time.Now()
@@ -49,14 +53,13 @@ func logger() gin.HandlerFunc {
 			MsgStr:     msg,
 		}
 
-		if path != "/metrics" {
-			log.Info().
-				Str("server", cData.SerName).
-				Str("method", cData.Method).
-				Str("path", cData.Path).
-				Dur("resp_time", cData.Latency).
-				Int("status", cData.StatusCode).
-				Msg(cData.MsgStr)
-		}
+		log.Info().
+			Str("server", cData.SerName).
+			Str("method", cData.Method).
+			Str("path", cData.Path).
+			Dur("resp_time", cData.Latency).
+			Int("status", cData.StatusCode).
+			Msg(cData.MsgStr)
+
 	}
 }

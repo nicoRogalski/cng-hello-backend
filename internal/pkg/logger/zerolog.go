@@ -3,12 +3,12 @@ package logger
 import (
 	"os"
 
-	"github.com/rogalni/cng-hello-backend/internal/utils/config"
+	"github.com/rogalni/cng-hello-backend/config"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 )
 
-func init() {
+func Setup() {
 	// Setting up the default logger
 	log.Logger = zerolog.New(os.Stderr).
 		With().

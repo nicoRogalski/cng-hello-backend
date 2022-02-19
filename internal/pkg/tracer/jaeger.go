@@ -3,7 +3,7 @@ package tracer
 import (
 	"context"
 
-	"github.com/rogalni/cng-hello-backend/internal/utils/config"
+	"github.com/rogalni/cng-hello-backend/config"
 	"github.com/rs/zerolog/log"
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/attribute"
@@ -15,7 +15,7 @@ import (
 	"go.opentelemetry.io/otel/trace"
 )
 
-func init() {
+func Setup() {
 	if config.App.IsDevMode {
 		return
 	}

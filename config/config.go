@@ -22,7 +22,7 @@ type Config struct {
 	PostgresDb      string `mapstructure:"POSTGRES_DB"`
 }
 
-func init() {
+func Setup() {
 	viper.SetDefault("SERVICE_NAME", "cng-hello-backend")
 	viper.SetDefault("PORT", "8080")
 	viper.SetDefault("JSON_LOGGING", true)
@@ -34,7 +34,7 @@ func init() {
 	viper.SetDefault("POSTGRES_PASSWORD", "")
 	viper.SetDefault("POSTGRES_DB", "")
 
-	viper.AddConfigPath(".")
+	viper.AddConfigPath("./config")
 	viper.SetConfigName("app")
 	viper.SetConfigType("env")
 

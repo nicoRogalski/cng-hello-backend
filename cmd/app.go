@@ -4,22 +4,28 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/rogalni/cng-hello-backend/config"
 	"github.com/rogalni/cng-hello-backend/internal/adapter/rest/handler"
 	"github.com/rogalni/cng-hello-backend/internal/middleware"
-	"github.com/rogalni/cng-hello-backend/internal/utils/config"
-	"github.com/rogalni/cng-hello-backend/internal/utils/logger"
-	"github.com/rogalni/cng-hello-backend/internal/utils/tracer"
+	"github.com/rogalni/cng-hello-backend/internal/pkg/auth"
+	"github.com/rogalni/cng-hello-backend/internal/pkg/logger"
+	"github.com/rogalni/cng-hello-backend/internal/pkg/tracer"
 )
 
 func main() {
+	config.Setup()
+	logger.Setup()
+	tracer.Setup()
+	auth.Setup()
+	setupServer()
+}
+
+func setupServer() {
 	if !config.App.IsDevMode {
 		gin.SetMode(gin.ReleaseMode)
 	}
-
 	r := gin.New()
-	logger.SetupGin(r)
 	setupRoutes(r)
-
 	http.ListenAndServe(":"+config.App.Port, r)
 }
 
@@ -28,7 +34,7 @@ func setupRoutes(r *gin.Engine) {
 	handler.SetupHealth(r)
 
 	api := r.Group("/api")
-
+	logger.ForGroup(api)
 	tracer.ForGroup(api)
 	{
 		v1 := api.Group("/v1")
