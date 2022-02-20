@@ -3,9 +3,9 @@ package handler
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/rogalni/cng-hello-backend/internal/adapter/rest/dto"
-	"github.com/rogalni/cng-hello-backend/internal/pkg/tracer"
 	"github.com/rogalni/cng-hello-backend/internal/service"
 	"github.com/rogalni/cng-hello-backend/internal/utils"
+	"github.com/rogalni/cng-hello-backend/pkg/gin/tracer"
 	"github.com/rs/zerolog/log"
 )
 

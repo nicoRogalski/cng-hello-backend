@@ -7,21 +7,23 @@ import (
 	"github.com/rogalni/cng-hello-backend/config"
 	"github.com/rogalni/cng-hello-backend/internal/adapter/rest/handler"
 	"github.com/rogalni/cng-hello-backend/internal/middleware"
-	"github.com/rogalni/cng-hello-backend/internal/pkg/auth"
 	"github.com/rogalni/cng-hello-backend/internal/pkg/logger"
-	"github.com/rogalni/cng-hello-backend/internal/pkg/tracer"
+	"github.com/rogalni/cng-hello-backend/pkg/auth"
+	"github.com/rogalni/cng-hello-backend/pkg/gin/health"
+	"github.com/rogalni/cng-hello-backend/pkg/gin/log"
+	"github.com/rogalni/cng-hello-backend/pkg/gin/metrics"
+	"github.com/rogalni/cng-hello-backend/pkg/gin/tracer"
 )
 
 func main() {
 	config.Setup()
+	isDev := config.App.IsDevMode
 	logger.Setup()
-	tracer.Setup()
-	auth.Setup()
-	setupServer()
-}
+	tracer.Setup(config.App.JaegerEndpoint, config.App.ServiceName, isDev)
 
-func setupServer() {
-	if !config.App.IsDevMode {
+	auth.Setup(config.App.JwtCertUrl)
+
+	if !isDev {
 		gin.SetMode(gin.ReleaseMode)
 	}
 	r := gin.New()
@@ -30,12 +32,12 @@ func setupServer() {
 }
 
 func setupRoutes(r *gin.Engine) {
-	handler.SetupMetrics(r)
-	handler.SetupHealth(r)
+	health.For(r)
+	metrics.For(r)
 
 	api := r.Group("/api")
 	tracer.ForGroup(api)
-	logger.ForGroup(api)
+	log.ForGroup(api, config.App.ServiceName)
 	{
 		v1 := api.Group("/v1")
 		{

@@ -1,10 +1,9 @@
-package service
+package auth
 
 import (
 	"fmt"
 
 	"github.com/golang-jwt/jwt"
-	"github.com/rogalni/cng-hello-backend/internal/pkg/auth"
 )
 
 const (
@@ -35,12 +34,12 @@ func ValidateToken(encodedToken string) (*jwt.Token, error) {
 			return nil, fmt.Errorf("found key ID, but value was not a string")
 		}
 
-		cert, found := auth.GetCert(keyId)
+		key, found := getRsaKey(keyId)
 		if !found {
 			return nil, fmt.Errorf("no public RSA key found corresponding to key ID from token '%v'", keyId)
 		}
 
-		keyStr := pubKeyHeader + "\n" + cert.X5C[0] + "\n" + pubKeyFooter
+		keyStr := pubKeyHeader + "\n" + key + "\n" + pubKeyFooter
 
 		// Since the token is RSA (which we validated at the start of this function), the return type of this function actually has to be rsa.PublicKey!
 		pubKey, err := jwt.ParseRSAPublicKeyFromPEM([]byte(keyStr))

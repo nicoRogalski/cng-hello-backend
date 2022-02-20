@@ -5,7 +5,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt"
-	"github.com/rogalni/cng-hello-backend/internal/service"
+	"github.com/rogalni/cng-hello-backend/pkg/auth"
 )
 
 const BEARER_SCHEMA = "Bearer "
@@ -18,19 +18,22 @@ func ValidateJWT(c *gin.Context) {
 		return
 	}
 	tokenString := authHeader[len(BEARER_SCHEMA):]
-	token, err := service.ValidateToken(tokenString)
+	token, err := auth.ValidateToken(tokenString)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusUnauthorized, err.Error())
 		return
 	}
 
-	if token.Valid {
-		claims := token.Claims.(jwt.MapClaims)
-		// Adding groups to context
-		g := claims["groups"].([]interface{})
-		c.Set("groups", g)
-	} else {
+	if !token.Valid {
 		c.AbortWithStatus(http.StatusUnauthorized)
 		return
 	}
+
+	claims := token.Claims.(jwt.MapClaims)
+
+	//TODO: Outsource in pkg
+	// Adding groups to context
+	g := claims["groups"].([]interface{})
+	c.Set("groups", g)
+
 }

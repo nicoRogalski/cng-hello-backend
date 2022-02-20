@@ -3,7 +3,6 @@ package tracer
 import (
 	"context"
 
-	"github.com/rogalni/cng-hello-backend/config"
 	"github.com/rs/zerolog/log"
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/attribute"
@@ -15,12 +14,12 @@ import (
 	"go.opentelemetry.io/otel/trace"
 )
 
-func Setup() {
-	if config.App.IsDevMode {
+func Setup(endpoint string, serviceName string, enabled bool) {
+	if enabled {
 		return
 	}
 
-	exp, err := jaeger.New(jaeger.WithCollectorEndpoint(jaeger.WithEndpoint(config.App.JaegerEndpoint)))
+	exp, err := jaeger.New(jaeger.WithCollectorEndpoint(jaeger.WithEndpoint(endpoint)))
 
 	if err != nil {
 		log.Fatal().Err(err)
@@ -30,7 +29,7 @@ func Setup() {
 		sdktrace.WithBatcher(exp),
 		sdktrace.WithResource(resource.NewSchemaless(attribute.KeyValue{
 			Key:   semconv.ServiceNameKey,
-			Value: attribute.StringValue(config.App.ServiceName),
+			Value: attribute.StringValue(serviceName),
 		})),
 	)
 	otel.SetTracerProvider(tp)

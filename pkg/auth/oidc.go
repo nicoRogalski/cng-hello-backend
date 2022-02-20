@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/rogalni/cng-hello-backend/config"
 	"github.com/rs/zerolog/log"
 )
 
@@ -25,13 +24,12 @@ type Key struct {
 	X5TS256 string   `json:"x5t#S256"`
 }
 
-func Setup() {
-	u := config.App.JwtCertUrl
-	if u == "" {
+func Setup(jwtCertUrl string) {
+	if jwtCertUrl == "" {
 		log.Warn().Msg("Server without OIDC Endpoint for secret")
 		return
 	}
-	r, err := http.Get(u)
+	r, err := http.Get(jwtCertUrl)
 	if err != nil {
 		log.Warn().Msg("Could not fetch JWT Certificate")
 	}
@@ -41,7 +39,17 @@ func Setup() {
 	}
 }
 
-func GetCert(kid string) (*Key, bool) {
+func getRsaKey(kid string) (string, bool) {
+	cert, found := getCert(kid)
+	if !found {
+		return "", false
+	}
+
+	return cert.X5C[0], true
+
+}
+
+func getCert(kid string) (*Key, bool) {
 	for _, v := range cts.Keys {
 		if kid == v.Kid {
 			return &v, true

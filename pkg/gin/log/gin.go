@@ -1,10 +1,9 @@
-package logger
+package log
 
 import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/rogalni/cng-hello-backend/config"
 	"github.com/rs/zerolog/log"
 	"go.opentelemetry.io/otel/trace"
 )
@@ -20,15 +19,15 @@ type ginHands struct {
 	SpanId     string
 }
 
-func ForGroup(r *gin.RouterGroup) {
-	r.Use(logger())
+func ForGroup(r *gin.RouterGroup, serviceName string) {
+	r.Use(logger(serviceName))
 }
 
-func ForEngine(r *gin.Engine) {
-	r.Use(logger())
+func ForEngine(r *gin.Engine, serviceName string) {
+	r.Use(logger(serviceName))
 }
 
-func logger() gin.HandlerFunc {
+func logger(s string) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		t := time.Now()
 		// before request
@@ -46,7 +45,7 @@ func logger() gin.HandlerFunc {
 		sc := trace.SpanFromContext(c.Request.Context()).SpanContext()
 
 		cData := &ginHands{
-			SerName:    config.App.ServiceName,
+			SerName:    s,
 			Path:       path,
 			Latency:    time.Since(t),
 			Method:     c.Request.Method,
