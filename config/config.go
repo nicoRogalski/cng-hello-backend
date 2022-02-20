@@ -14,7 +14,6 @@ type Config struct {
 	IsLogLevelDebug bool   `mapstructure:"LOG_LEVEL_DEBUG"`
 	IsDevMode       bool   `mapstructure:"DEV_MODE"`
 	JwtCertUrl      string `mapstructure:"JWT_CERT_URL"`
-	JwtSecret       string `mapstructure:"JWT_SECRET"`
 	JaegerEndpoint  string `mapstructure:"JAEGER_ENDPOINT"`
 	PostgresHost    string `mapstructure:"POSTGRES_HOST"`
 	PostgresUser    string `mapstructure:"POSTGRES_USER"`
@@ -28,6 +27,7 @@ func Setup() {
 	viper.SetDefault("JSON_LOGGING", true)
 	viper.SetDefault("LOG_LEVEL_DEBUG", false)
 	viper.SetDefault("DEV_MODE", false)
+	viper.SetDefault("JWT_CERT_URL", "")
 	viper.SetDefault("JAEGER_ENDPOINT", "")
 	viper.SetDefault("POSTGRES_HOST", "")
 	viper.SetDefault("POSTGRES_USER", "")

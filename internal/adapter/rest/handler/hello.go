@@ -27,8 +27,8 @@ func GetHello(c *gin.Context) {
 }
 
 func GetHelloSecure(c *gin.Context) {
-	role := utils.GetJWTRole(c)
-	log.Info().Msgf("Authorized with role: %s", role)
+	roles := utils.GetJWTRoles(c)
+	log.Info().Msgf("Authorized with role: %s", roles)
 	span := tracer.Start(c.Request.Context(), "GetHelloSecure")
 	defer span.End()
 	hs := service.NewHelloService()

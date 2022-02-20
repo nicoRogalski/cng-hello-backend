@@ -65,6 +65,5 @@ func logger() gin.HandlerFunc {
 			Dur("resp_time", cData.Latency).
 			Int("status", cData.StatusCode).
 			Msg(cData.MsgStr)
-
 	}
 }

@@ -12,7 +12,7 @@ func NewHelloRepository() *HelloRepository {
 }
 
 func (h HelloRepository) GetMessage() *model.Message {
-	log.Info().Msg("Get message from repository")
+	log.Info().Msg("Get message from repository without trace")
 	return &model.Message{
 		Id:   "1234",
 		Code: "hello",

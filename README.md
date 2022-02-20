@@ -22,6 +22,10 @@ docker-compose up
 - Is Go ready to be used in the cloud enterprise environment ?
 - Can Go detach big ship backends like java ?
 
+### 20.02.2022
+- Some general packages for tracing, logging, and auth with a clean api needs to be implemented in order to not always do everything from scratch
+
+
 ## Done
 - Base go file structure (https://github.com/golang-standards/project-layout)
 - Architecture (example: https://medium.com/@matiasvarela/hexagonal-architecture-in-go-cfd4e436faa3)
@@ -36,14 +40,13 @@ docker-compose up
 - Tracing of gin (https://github.com/open-telemetry/opentelemetry-go-contrib/tree/main/instrumentation/github.com/gin-gonic/gin/otelgin)
 - Trace and spanId in logs
 - JWT validation (https://github.com/golang-jwt/jwt)
+- Cert parsing from oidc cert endpoint
+- Apply groups from jwt in the context
 - Implement readiness and live checks
 
 # 
 
 ## In progress:
-
-### Security
-- Implement parsing of jwt secret from oidc provider
 
 ### Monitoring
 - Setup grafana that the dashboard is predefined
@@ -66,6 +69,7 @@ docker-compose up
 #
 
 #### Watch out in the future:
+- Add clean interface for pkg functions for reusability
 - https://github.com/open-telemetry/opentelemetry-go
 - GraphQL
 - Messageing (Kafka, Nats, RabbitMQ ...)

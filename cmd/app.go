@@ -41,11 +41,11 @@ func setupRoutes(r *gin.Engine) {
 		{
 			v1.GET("/hello", handler.GetHello)
 			// "/secure/hello" is a specific path in a group thats needs to be secured via jwt
-			v1.GET("/secure/hello", middleware.ValidateJWT(), handler.GetHelloSecure)
+			v1.GET("/secure/hello", middleware.ValidateJWT, handler.GetHelloSecure)
 		}
 		// "/secure" simulates a path where all endpoints needs to be secured via jwt
 		v2 := api.Group("/secure")
-		v2.Use(middleware.ValidateJWT())
+		v2.Use(middleware.ValidateJWT)
 		{
 			v2.GET("/hello", handler.GetHelloSecure)
 		}

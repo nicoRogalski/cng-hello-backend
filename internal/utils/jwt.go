@@ -1,11 +1,18 @@
 package utils
 
-import "github.com/gin-gonic/gin"
+import (
+	"github.com/gin-gonic/gin"
+)
 
-func GetJWTRole(c *gin.Context) string {
-	r, e := c.Get("ROLE")
+func GetJWTRoles(c *gin.Context) []string {
+	gs, e := c.Get("groups")
 	if !e {
-		return ""
+		return []string{}
 	}
-	return r.(string)
+	gg := gs.([]interface{})
+	g := make([]string, len(gg))
+	for i, v := range gg {
+		g[i] = v.(string)
+	}
+	return g
 }
