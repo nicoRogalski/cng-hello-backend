@@ -53,7 +53,6 @@ docker-compose up
 - Setup grafana that the dashboard is predefined
 
 ### Pkg
-- add more default implementations that can be reused in pgk
 - Add gin jwt middleware with options 
 
 #
@@ -67,6 +66,9 @@ docker-compose up
 ### Rest
 - Add api as generated from openapi.yml 
 
+### Testing
+- Apply testing for endpoints and services
+
 # 
 
 ## Known issues:
@@ -76,5 +78,5 @@ docker-compose up
 #### Watch out in the future:
 - https://github.com/open-telemetry/opentelemetry-go
 - GraphQL
-- Messageing (Kafka, Nats, RabbitMQ ...)
+- Messaging (Kafka, Nats, RabbitMQ ...)
 - outsource pkg in different project as lib/module/package

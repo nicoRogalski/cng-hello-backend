@@ -7,18 +7,18 @@ import (
 	"github.com/rogalni/cng-hello-backend/config"
 	"github.com/rogalni/cng-hello-backend/internal/adapter/rest/handler"
 	"github.com/rogalni/cng-hello-backend/internal/middleware"
-	"github.com/rogalni/cng-hello-backend/internal/pkg/logger"
 	"github.com/rogalni/cng-hello-backend/pkg/auth"
 	"github.com/rogalni/cng-hello-backend/pkg/gin/health"
 	"github.com/rogalni/cng-hello-backend/pkg/gin/log"
 	"github.com/rogalni/cng-hello-backend/pkg/gin/metrics"
 	"github.com/rogalni/cng-hello-backend/pkg/gin/tracer"
+	zlog "github.com/rogalni/cng-hello-backend/pkg/log"
 )
 
 func main() {
 	config.Setup()
 	isDev := config.App.IsDevMode
-	logger.Setup()
+	zlog.Setup(config.App.ServiceName, config.App.IsJsonLogging, config.App.IsLogLevelDebug)
 	tracer.Setup(config.App.JaegerEndpoint, config.App.ServiceName, isDev)
 
 	auth.Setup(config.App.JwtCertUrl)

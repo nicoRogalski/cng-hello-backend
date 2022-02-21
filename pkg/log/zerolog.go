@@ -1,33 +1,32 @@
-package logger
+package log
 
 import (
 	"context"
 	"os"
 
-	"github.com/rogalni/cng-hello-backend/config"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"go.opentelemetry.io/otel/trace"
 )
 
-func Setup() {
+func Setup(serviceName string, isJson bool, isDebug bool) {
 	// Setting up the default logger
 	log.Logger = zerolog.New(os.Stderr).
 		With().
-		Str("service", config.App.ServiceName).
+		Str("service", serviceName).
 		Timestamp().
 		Caller().
 		Logger()
 
 	zerolog.TimeFieldFormat = zerolog.TimeFormatUnix
 
-	if config.App.IsLogLevelDebug {
+	if isDebug {
 		zerolog.SetGlobalLevel(zerolog.DebugLevel)
 	} else {
 		zerolog.SetGlobalLevel(zerolog.InfoLevel)
 	}
 
-	if !config.App.IsJsonLogging {
+	if !isJson {
 		log.Logger = log.Output(zerolog.ConsoleWriter{Out: os.Stderr})
 	}
 }
