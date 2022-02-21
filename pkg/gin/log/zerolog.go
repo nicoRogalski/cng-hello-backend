@@ -15,8 +15,6 @@ type ginHands struct {
 	Method     string
 	StatusCode int
 	MsgStr     string
-	TraceId    string
-	SpanId     string
 }
 
 func ForGroup(r *gin.RouterGroup, serviceName string) {
@@ -51,16 +49,16 @@ func logger(s string) gin.HandlerFunc {
 			Method:     c.Request.Method,
 			StatusCode: c.Writer.Status(),
 			MsgStr:     msg,
-			TraceId:    sc.TraceID().String(),
-			SpanId:     sc.SpanID().String(),
 		}
 
-		log.Info().
-			Str("server", cData.SerName).
+		li := log.Info()
+		if sc.IsValid() {
+			li.Str("trace", sc.TraceID().String()).
+				Str("span", sc.SpanID().String())
+		}
+		li.Str("server", cData.SerName).
 			Str("method", cData.Method).
 			Str("path", cData.Path).
-			Str("trace", cData.TraceId).
-			Str("span", cData.SpanId).
 			Dur("resp_time", cData.Latency).
 			Int("status", cData.StatusCode).
 			Msg(cData.MsgStr)
