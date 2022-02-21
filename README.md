@@ -43,7 +43,7 @@ docker-compose up
 - Cert parsing from oidc cert endpoint
 - Apply groups from jwt in the context
 - Implement readiness and live checks
-- Added pgk for public usage of default implementations for gin
+- Added pgk for public usage of default implementations for gin/jwt/oidc
 
 # 
 
@@ -51,9 +51,6 @@ docker-compose up
 
 ### Monitoring
 - Setup grafana that the dashboard is predefined
-
-### Pkg
-- Add gin jwt middleware with options 
 
 #
 
@@ -79,4 +76,4 @@ docker-compose up
 - https://github.com/open-telemetry/opentelemetry-go
 - GraphQL
 - Messaging (Kafka, Nats, RabbitMQ ...)
-- outsource pkg in different project as lib/module/package
+- Outsource pkg in different project as lib/module/package
