@@ -33,6 +33,11 @@ func Setup(serviceName string, isJson bool, isDebug bool) {
 
 func InfoWithTrace(c context.Context) *zerolog.Event {
 	sc := trace.SpanFromContext(c).SpanContext()
-	return log.Info().Str("trace", sc.TraceID().String()).Str("span", sc.SpanID().String())
+	li := log.Info()
+	if sc.IsValid() {
+		li.Str("trace", sc.TraceID().String()).
+			Str("span", sc.SpanID().String())
+	}
+	return li
 
 }
