@@ -21,7 +21,7 @@ func main() {
 	zlog.Setup(config.App.ServiceName, config.App.IsJsonLogging, config.App.IsLogLevelDebug)
 	tracer.Setup(config.App.JaegerEndpoint, config.App.ServiceName, isDev)
 
-	auth.Setup(config.App.JwtCertUrl)
+	auth.Setup(config.App.OAuthJwtCertUri)
 
 	if !isDev {
 		gin.SetMode(gin.ReleaseMode)

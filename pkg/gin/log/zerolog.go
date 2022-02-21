@@ -40,7 +40,6 @@ func logger(s string) gin.HandlerFunc {
 		if msg == "" {
 			msg = "Request"
 		}
-		sc := trace.SpanFromContext(c.Request.Context()).SpanContext()
 
 		cData := &ginHands{
 			SerName:    s,
@@ -52,6 +51,7 @@ func logger(s string) gin.HandlerFunc {
 		}
 
 		li := log.Info()
+		sc := trace.SpanFromContext(c.Request.Context()).SpanContext()
 		if sc.IsValid() {
 			li.Str("trace", sc.TraceID().String()).
 				Str("span", sc.SpanID().String())

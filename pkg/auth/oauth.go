@@ -7,9 +7,9 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
-var cts Certs
+var cts certs
 
-type Certs struct {
+type certs struct {
 	Keys []Key `json:"keys"`
 }
 type Key struct {
@@ -24,12 +24,12 @@ type Key struct {
 	X5TS256 string   `json:"x5t#S256"`
 }
 
-func Setup(jwtCertUrl string) {
-	if jwtCertUrl == "" {
+func Setup(oauthJwtCertUrl string) {
+	if oauthJwtCertUrl == "" {
 		log.Warn().Msg("Server without OIDC Endpoint for secret")
 		return
 	}
-	r, err := http.Get(jwtCertUrl)
+	r, err := http.Get(oauthJwtCertUrl)
 	if err != nil {
 		log.Warn().Msg("Could not fetch JWT Certificate")
 	}
@@ -44,7 +44,6 @@ func getRsaKey(kid string) (string, bool) {
 	if !found {
 		return "", false
 	}
-
 	return cert.X5C[0], true
 
 }

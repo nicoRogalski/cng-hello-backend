@@ -34,7 +34,6 @@ func ValidateToken(encodedToken string) (*jwt.Token, error) {
 				jwt.SigningMethodRS256.Name,
 				token.Header)
 		}
-
 		untypedKeyId, found := token.Header[keyIdTokenHeaderKey]
 		if !found {
 			return nil, fmt.Errorf("no key ID key '%v' found in token header", keyIdTokenHeaderKey)
