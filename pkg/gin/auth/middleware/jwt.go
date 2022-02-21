@@ -6,18 +6,15 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt"
 	"github.com/rogalni/cng-hello-backend/pkg/auth"
+	gauth "github.com/rogalni/cng-hello-backend/pkg/gin/auth"
 )
 
-const BEARER_SCHEMA = "Bearer "
-const AUTH_HEADER = "Authorization"
-
 func ValidateJWT(c *gin.Context) {
-	authHeader := c.GetHeader(AUTH_HEADER)
-	if authHeader == "" {
-		c.AbortWithStatus(http.StatusUnauthorized)
+	tokenString, err := auth.ExtractJWT(c.GetHeader(auth.AuthHeader))
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusUnauthorized, err.Error())
 		return
 	}
-	tokenString := authHeader[len(BEARER_SCHEMA):]
 	token, err := auth.ValidateToken(tokenString)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusUnauthorized, err.Error())
@@ -30,10 +27,5 @@ func ValidateJWT(c *gin.Context) {
 	}
 
 	claims := token.Claims.(jwt.MapClaims)
-
-	//TODO: Outsource in pkg
-	// Adding groups to context
-	g := claims["groups"].([]interface{})
-	c.Set("groups", g)
-
+	c.Set(gauth.ClaimsFieldName, claims)
 }

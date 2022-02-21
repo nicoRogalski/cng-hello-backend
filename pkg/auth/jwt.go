@@ -1,6 +1,7 @@
 package auth
 
 import (
+	"errors"
 	"fmt"
 
 	"github.com/golang-jwt/jwt"
@@ -13,7 +14,16 @@ const (
 	// Header and footer to attach to base64-encoded key data that we receive from Auth0
 	pubKeyHeader = "-----BEGIN CERTIFICATE-----"
 	pubKeyFooter = "-----END CERTIFICATE-----"
+	bearerSchema = "Bearer "
+	AuthHeader   = "Authorization"
 )
+
+func ExtractJWT(authHeader string) (string, error) {
+	if authHeader == "" {
+		return "", errors.New("no authorization header present")
+	}
+	return authHeader[len(bearerSchema):], nil
+}
 
 func ValidateToken(encodedToken string) (*jwt.Token, error) {
 	return jwt.Parse(encodedToken, func(token *jwt.Token) (interface{}, error) {
