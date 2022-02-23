@@ -74,6 +74,10 @@ docker-compose up
 ### Database
 - Setup Table with a migration tool
 
+### Metrics
+- Add possibility to pass handler for readiness and liveness
+- Add Ping on db for readiness and liveness check and include result in response object
+
 ### Monitoring
 - Setup grafana that the dashboard is predefined
 
