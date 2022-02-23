@@ -26,7 +26,7 @@ type Key struct {
 
 func Setup(oauthJwtCertUrl string) {
 	if oauthJwtCertUrl == "" {
-		log.Warn().Msg("Server without OIDC Endpoint for secret")
+		log.Warn().Msg("Server starts without OIDC Endpoint for secret")
 		return
 	}
 	r, err := http.Get(oauthJwtCertUrl)
@@ -45,7 +45,6 @@ func getRsaKey(kid string) (string, bool) {
 		return "", false
 	}
 	return cert.X5C[0], true
-
 }
 
 func getCert(kid string) (*Key, bool) {

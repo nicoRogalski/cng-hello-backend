@@ -24,7 +24,6 @@ func main() {
 	tracer.Setup(config.App.JaegerEndpoint, config.App.ServiceName, isDev)
 	auth.Setup(config.App.OAuthJwtCertUri)
 	postgres.InitConnection()
-
 	if !isDev {
 		gin.SetMode(gin.ReleaseMode)
 	}
@@ -45,11 +44,13 @@ func setupRoutes(r *gin.Engine) {
 	api.GET("/hello", handler.GetHello)
 	// "/secure/hello" simulates a specific path in a group thats needs to be secured via jwt
 	api.GET("/hello/secure", middleware.ValidateJWT, handler.GetHelloSecure)
+
 	// "/secure" simulates a path where all endpoints needs to be secured via jwt
 	s := api.Group("/secure")
 	s.Use(middleware.ValidateJWT)
 	s.GET("/hello", handler.GetHelloSecure)
 
+	// "v1" simulates a real world example of endpoints
 	v1 := api.Group("/v1")
 	v1Handler.SetupMessages(v1)
 

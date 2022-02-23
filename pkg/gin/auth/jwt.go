@@ -9,6 +9,7 @@ const (
 	ClaimsFieldName = "claims"
 )
 
+// Gets the claims from the context after the middleware placed it inside on setup
 func GetClaims(c *gin.Context) (claims jwt.MapClaims, exists bool) {
 	cl, e := c.Get(ClaimsFieldName)
 	if !e {
