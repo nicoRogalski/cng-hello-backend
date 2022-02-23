@@ -30,5 +30,10 @@ func InitConnection() {
 	sqlDB.SetMaxIdleConns(10)
 	sqlDB.SetMaxOpenConns(100)
 	sqlDB.SetConnMaxLifetime(time.Hour)
+	// Ensure that the connection is established
+	e := sqlDB.Ping()
+	if e != nil {
+		panic(e)
+	}
 	DBConn = db
 }
