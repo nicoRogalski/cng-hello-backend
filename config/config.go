@@ -17,6 +17,7 @@ type Config struct {
 	OAuthJwtCertUri   string `mapstructure:"OAUTH_JWT_CERT_URI"`
 	JaegerEndpoint    string `mapstructure:"JAEGER_ENDPOINT"`
 	PostgresHost      string `mapstructure:"POSTGRES_HOST"`
+	PostgresPort      string `mapstructure:"POSTGRES_PORT"`
 	PostgresUser      string `mapstructure:"POSTGRES_USER"`
 	PostresPassword   string `mapstructure:"POSTGRES_PASSWORD"`
 	PostgresDb        string `mapstructure:"POSTGRES_DB"`
@@ -32,6 +33,7 @@ func Setup() {
 	viper.SetDefault("OAUTH_JWT_CERT_URI", "")
 	viper.SetDefault("JAEGER_ENDPOINT", "")
 	viper.SetDefault("POSTGRES_HOST", "")
+	viper.SetDefault("POSTGRES_PORT", "")
 	viper.SetDefault("POSTGRES_USER", "")
 	viper.SetDefault("POSTGRES_PASSWORD", "")
 	viper.SetDefault("POSTGRES_DB", "")

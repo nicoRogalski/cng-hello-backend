@@ -1,18 +1,72 @@
 openapi: 3.1.0
 info:
-  title: Non-oAuth Scopes example
+  title: cng-hello-backend
+  description: cng-hello-backend openapi specification
   version: 1.0.0
 paths:
-  /api/v1/hello:
+  /api/secure/hello:
     get:
+      operationId: getSecureHello
+      description: Gives a hello message
+      responses:
+        200:
+          description: Response of a hello message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelloMessage'
       security:
-        - bearerAuth:
-          - public
+        - bearerAuth: [ ] 
+  /api/hello:
+    get:
+      operationId: getHello
+      description: Gives a hello message
+      responses:
+        200:
+          description: Response of a hello message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelloMessage'
+      security:
+        - bearerAuth: [ ] 
+  /api/v1/messages:
+    get:
+      operationId: getMessage
+      description: Gives all messages
+      responses:
+        200:
+          description: Response of messages.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Messages'
+      security:
+        - bearerAuth: [ ] 
 
 components:
+  schemas:
+    Messages:
+      type: array
+      items:
+        $ref: '#/components/schemas/Message'
+    Message:
+      type: object
+      properties:
+        id:
+          type: string
+        code:
+          type: string
+        text:
+          type: string
+    HelloMessage:
+      type: object
+      properties:
+        text:
+          type: string    
+    
   securitySchemes:
     bearerAuth:
       type: http
       scheme: bearer
       bearerFormat: jwt
-      description: 'note: non-oauth scopes are not defined at the securityScheme level'
