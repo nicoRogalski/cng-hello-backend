@@ -33,7 +33,7 @@ func Setup() {
 	viper.SetDefault("OAUTH_JWT_CERT_URI", "")
 	viper.SetDefault("JAEGER_ENDPOINT", "")
 	viper.SetDefault("POSTGRES_HOST", "")
-	viper.SetDefault("POSTGRES_PORT", "")
+	viper.SetDefault("POSTGRES_PORT", "5432")
 	viper.SetDefault("POSTGRES_USER", "")
 	viper.SetDefault("POSTGRES_PASSWORD", "")
 	viper.SetDefault("POSTGRES_DB", "")

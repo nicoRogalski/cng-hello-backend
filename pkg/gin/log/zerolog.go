@@ -50,7 +50,7 @@ func logger(s string) gin.HandlerFunc {
 			MsgStr:     msg,
 		}
 
-		li := log.Info()
+		li := log.Debug()
 		sc := trace.SpanFromContext(c.Request.Context()).SpanContext()
 		if sc.IsValid() {
 			li.Str("trace", sc.TraceID().String()).

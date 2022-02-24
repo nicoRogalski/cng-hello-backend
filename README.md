@@ -1,6 +1,6 @@
 # cng-hello-backend
 
-Example cloud native application in Go.
+Showcase of a cloud native application in Go.
 
 ## 1. How to run:
 
