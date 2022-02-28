@@ -7,12 +7,12 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
-var cts certs
+var cachedJwks jwks
 
-type certs struct {
-	Keys []Key `json:"keys"`
+type jwks struct {
+	Keys []jwk `json:"keys"`
 }
-type Key struct {
+type jwk struct {
 	Kid     string   `json:"kid"`
 	Kty     string   `json:"kty"`
 	Alg     string   `json:"alg"`
@@ -33,7 +33,7 @@ func Setup(oauthJwtCertUrl string) {
 	if err != nil {
 		log.Warn().Msg("Could not fetch JWT Certificate")
 	}
-	er := json.NewDecoder(r.Body).Decode(&cts)
+	er := json.NewDecoder(r.Body).Decode(&cachedJwks)
 	if er != nil {
 		log.Warn().Msg("Could not decode JWT Certificate")
 	}
@@ -47,8 +47,8 @@ func getRsaKey(kid string) (string, bool) {
 	return cert.X5C[0], true
 }
 
-func getCert(kid string) (*Key, bool) {
-	for _, v := range cts.Keys {
+func getCert(kid string) (*jwk, bool) {
+	for _, v := range cachedJwks.Keys {
 		if kid == v.Kid {
 			return &v, true
 		}
