@@ -18,21 +18,22 @@ func NewMessageService() *MessageService {
 	}
 }
 
-func (ms MessageService) GetMessages(ctx context.Context) []*model.Message {
+func (ms MessageService) GetMessages(ctx context.Context) ([]*model.Message, error) {
 	log.InfoWithTrace(ctx).Msg("Get message from service with trace infos")
 	return ms.messageRepository.GetMessages(ctx)
 }
 
-func (ms MessageService) GetMessage(ctx context.Context, id string) *model.Message {
+func (ms MessageService) GetMessage(ctx context.Context, id string) (*model.Message, error) {
 	log.InfoWithTrace(ctx).Msg("Get message from service with trace infos")
 	return ms.messageRepository.GetMessage(ctx, id)
 }
 
-func (ms MessageService) CreateMessage(ctx context.Context, m *model.Message) {
+func (ms MessageService) CreateMessage(ctx context.Context, m *model.Message) error {
 	log.InfoWithTrace(ctx).Msg("Create message from service with trace infos")
-	ms.messageRepository.CreateMessage(ctx, m)
+	return ms.messageRepository.CreateMessage(ctx, m)
 }
-func (ms MessageService) DeleteMessage(ctx context.Context, id string) {
+
+func (ms MessageService) DeleteMessage(ctx context.Context, id string) error {
 	log.InfoWithTrace(ctx).Msg("Delete message from service with trace infos")
-	ms.messageRepository.DeleteMessage(ctx, id)
+	return ms.messageRepository.DeleteMessage(ctx, id)
 }

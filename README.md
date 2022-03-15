@@ -72,7 +72,10 @@ docker-compose up
 ## 4. In progress:
 
 ### Database
-- Setup Table with a migration tool
+- Setup Table with a migration tool(https://github.com/golang-migrate/migrate)
+
+### Error handling
+- Add Gin middleware for mapping errors to propper responses
 
 ### Metrics
 - Add possibility to pass handler for readiness and liveness

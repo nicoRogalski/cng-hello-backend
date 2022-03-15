@@ -18,15 +18,17 @@ func SetupMessages(g *gin.RouterGroup) {
 }
 
 func getMessages(c *gin.Context) {
-	hs := service.NewMessageService()
-	m := hs.GetMessages(c.Request.Context())
+	ms := service.NewMessageService()
+	m, err := ms.GetMessages(c.Request.Context())
+	c.Error(err)
 	c.IndentedJSON(200, toDtos(m))
 }
 
 func getMessage(c *gin.Context) {
-	hs := service.NewMessageService()
+	ms := service.NewMessageService()
 	id := c.Param("id")
-	m := hs.GetMessage(c.Request.Context(), id)
+	m, err := ms.GetMessage(c.Request.Context(), id)
+	c.Error(err)
 	c.IndentedJSON(200, &dto.Message{
 		Id:   m.Id,
 		Code: m.Code,
@@ -35,18 +37,19 @@ func getMessage(c *gin.Context) {
 }
 
 func createMessage(c *gin.Context) {
-	hs := service.NewMessageService()
+	ms := service.NewMessageService()
 	var m *model.Message
 	c.Bind(&m)
-	hs.CreateMessage(c.Request.Context(), m)
+	err := ms.CreateMessage(c.Request.Context(), m)
+	c.Error(err)
 	c.Status(204)
 }
 
 func deleteMessage(c *gin.Context) {
-	hs := service.NewMessageService()
-
+	ms := service.NewMessageService()
 	id := c.Param("id")
-	hs.DeleteMessage(c.Request.Context(), id)
+	err := ms.DeleteMessage(c.Request.Context(), id)
+	c.Error(err)
 	c.Status(204)
 }
 
