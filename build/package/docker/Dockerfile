@@ -1,9 +1,7 @@
-FROM golang:1.17-alpine AS builder
+FROM golang:1.18-alpine AS builder
 
 # Set necessary environmet variables needed for our image
-ENV GO111MODULE=on \
-    CGO_ENABLED=0 \
-    GOOS=linux \
+ENV GOOS=linux \
     GOARCH=amd64
 
 WORKDIR /build
@@ -13,13 +11,13 @@ COPY go.mod go.sum ./
 RUN go mod download
 
 COPY . .
-RUN go build -o main ./cmd
+RUN go build -buildvcs=false -o main ./cmd 
 
 WORKDIR /dist
 RUN cp /build/main .
 
 # Build a small image
-FROM alpine:3.15.0
+FROM alpine:3.15
 
 LABEL maintainer="nico.rogalski@msg-david.de"
 LABEL cng-hello-backend.project="CngHelloBackend"
