@@ -64,6 +64,9 @@ docker-compose up
 - Trace and spanId in logs
 - Implement readiness and live checks
 
+### Error handling
+- Added general error handling and handler for gin.
+
 ### Pkg
 - Added pgk for public usage of default implementations for gin/jwt/oidc (Should be later generalized and outsourced)
 
@@ -73,9 +76,6 @@ docker-compose up
 
 ### Database
 - Setup Table with a migration tool(https://github.com/golang-migrate/migrate)
-
-### Error handling
-- Add Gin middleware for mapping errors to propper responses
 
 ### Metrics
 - Add possibility to pass handler for readiness and liveness
@@ -89,8 +89,7 @@ docker-compose up
 ## 5. To be done:
 
 ### Rest
-- Add api as generated from openapi.yml 
-- Routing should be done in specific handlers
+- Add api as generated from openapi.yml
 
 ### Testing
 - Apply testing for endpoints and services
@@ -104,6 +103,4 @@ Nothing so far
 
 ## 7. Future concepts
 - https://github.com/open-telemetry/opentelemetry-go
-- GraphQL
 - Messaging (Kafka, Nats, RabbitMQ ...)
-- Outsource pkg in different project as lib/module/package
