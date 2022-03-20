@@ -103,4 +103,3 @@ Nothing so far
 
 ## 7. Future concepts
 - https://github.com/open-telemetry/opentelemetry-go
-- Messaging (Kafka, Nats, RabbitMQ ...)
