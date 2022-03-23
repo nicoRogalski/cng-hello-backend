@@ -63,9 +63,11 @@ docker-compose up
 - Tracing of gin (https://github.com/open-telemetry/opentelemetry-go-contrib/tree/main/instrumentation/github.com/gin-gonic/gin/otelgin)
 - Trace and spanId in logs
 - Implement readiness and live checks
+- Added possibility to pass handler for readiness and liveness
+- Added Ping on db for readiness and liveness check and include result in response object
 
 ### Error handling
-- Added general error handling and handler for gin.
+- Added general error handling and middleware for gin.
 
 ### Pkg
 - Added pgk for public usage of default implementations for gin/jwt/oidc (Should be later generalized and outsourced)
@@ -76,10 +78,6 @@ docker-compose up
 
 ### Database
 - Setup Table with a migration tool(https://github.com/golang-migrate/migrate)
-
-### Metrics
-- Add possibility to pass handler for readiness and liveness
-- Add Ping on db for readiness and liveness check and include result in response object
 
 ### Monitoring
 - Setup grafana that the dashboard is predefined
@@ -93,11 +91,6 @@ docker-compose up
 
 ### Testing
 - Apply testing for endpoints and services
-
-# 
-
-## 6. Known issues:
-Nothing so far
 
 #
 
