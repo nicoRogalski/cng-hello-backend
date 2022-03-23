@@ -20,6 +20,7 @@ type Health struct {
 	Code       int         `json:"-"`
 	Components []Component `json:"components,omitempty"`
 }
+
 type Component struct {
 	Name   string
 	Status string
