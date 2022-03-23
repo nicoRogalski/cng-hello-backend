@@ -16,9 +16,13 @@ type HealthHandler struct {
 type StatusFunc func() Health
 
 type Health struct {
-	Status     string            `json:"status"`
-	Code       int               `json:"-"`
-	Components map[string]string `json:"components,omitempty"`
+	Status     string      `json:"status"`
+	Code       int         `json:"-"`
+	Components []Component `json:"components,omitempty"`
+}
+type Component struct {
+	Name   string
+	Status string
 }
 
 func For(r *gin.Engine) *HealthHandler {
@@ -34,7 +38,7 @@ func (h *HealthHandler) WithReadiness(sf StatusFunc) *HealthHandler {
 	h.rg.GET("/readiness", func(c *gin.Context) {
 		es := sf()
 		for _, v := range es.Components {
-			if v == DOWN {
+			if v.Status == DOWN {
 				es.Status = DOWN
 				break
 			}
@@ -48,7 +52,7 @@ func (h *HealthHandler) WithLiveness(sf StatusFunc) *HealthHandler {
 	h.rg.GET("/liveness", func(c *gin.Context) {
 		es := sf()
 		for _, v := range es.Components {
-			if v == DOWN {
+			if v.Status == DOWN {
 				es.Status = DOWN
 				break
 			}

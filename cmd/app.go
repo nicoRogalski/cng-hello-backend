@@ -59,21 +59,24 @@ func setupRoutes(r *gin.Engine) {
 
 }
 
-func serverStatus() health.Health {
-	c := make(map[string]string)
-	c["server"] = health.UP
-	db, err := postgres.DBConn.DB()
-	if err != nil {
-		c["postgres"] = health.DOWN
+func serverStatus() (h health.Health) {
+	c := []health.Component{
+		{
+			Name:   "server",
+			Status: health.UP,
+		},
 	}
 
-	if err := db.Ping(); err != nil {
-		c["postgres"] = health.UP
-
+	phc := health.Component{Name: "postgres"}
+	if db, err := postgres.DBConn.DB(); err != nil {
+		phc.Status = health.DOWN
+	} else if err := db.Ping(); err != nil {
+		phc.Status = health.DOWN
 	} else {
-		c["postgres"] = health.DOWN
+		phc.Status = health.UP
 	}
-	return health.Health{
-		Components: c,
-	}
+	c = append(c, phc)
+	
+	h.Components = c
+	return
 }
