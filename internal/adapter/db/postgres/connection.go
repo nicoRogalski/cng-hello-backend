@@ -1,7 +1,6 @@
 package postgres
 
 import (
-	"database/sql"
 	"fmt"
 	"time"
 
@@ -14,7 +13,6 @@ import (
 
 var (
 	DBConn *gorm.DB
-	SqlDb  *sql.DB
 )
 
 func InitConnection() {
@@ -40,9 +38,9 @@ func InitConnection() {
 	sqlDB.SetMaxOpenConns(100)
 	sqlDB.SetConnMaxLifetime(time.Hour)
 	// Ensure that the connection is established
+	// Disabled in favour of health endpoints
 	// if err := sqlDB.Ping(); err != nil {
 	// 	panic(err)
 	// }
 	DBConn = db
-	SqlDb = sqlDB
 }

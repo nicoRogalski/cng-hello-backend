@@ -1,29 +1,65 @@
 package health
 
-import "github.com/gin-gonic/gin"
+import (
+	"github.com/gin-gonic/gin"
+)
+
+var (
+	UP   = "UP"
+	DOWN = "DOWN"
+)
+
+type HealthHandler struct {
+	rg *gin.RouterGroup
+}
+
+type StatusFunc func() Health
 
 type Health struct {
 	Status     string            `json:"status"`
+	Code       int               `json:"-"`
 	Components map[string]string `json:"components,omitempty"`
 }
-type Status func() Health
 
-func For(r *gin.Engine, extendedStatus Status) *gin.Engine {
-	health := r.Group("/health")
-	{
-		health.GET("/", getHealth)
-		health.GET("/readiness", func(c *gin.Context) {
-			c.IndentedJSON(200, extendedStatus())
-		})
-		health.GET("/liveness", func(c *gin.Context) {
-			c.IndentedJSON(200, extendedStatus())
-		})
+func For(r *gin.Engine) *HealthHandler {
+	hh := &HealthHandler{
+		rg: r.Group("/health"),
 	}
-	return r
+	hh.rg.GET("/", getHealth)
+
+	return hh
+}
+
+func (h *HealthHandler) WithReadiness(sf StatusFunc) *HealthHandler {
+	h.rg.GET("/readiness", func(c *gin.Context) {
+		es := sf()
+		for _, v := range es.Components {
+			if v == DOWN {
+				es.Status = DOWN
+				break
+			}
+		}
+		c.IndentedJSON(es.Code, es)
+	})
+	return h
+}
+
+func (h *HealthHandler) WithLiveness(sf StatusFunc) *HealthHandler {
+	h.rg.GET("/liveness", func(c *gin.Context) {
+		es := sf()
+		for _, v := range es.Components {
+			if v == DOWN {
+				es.Status = DOWN
+				break
+			}
+		}
+		c.IndentedJSON(es.Code, es)
+	})
+	return h
 }
 
 func getHealth(c *gin.Context) {
 	c.JSON(200, &Health{
-		Status: "UP",
+		Status: UP,
 	})
 }

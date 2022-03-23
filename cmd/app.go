@@ -33,23 +33,10 @@ func main() {
 }
 
 func setupRoutes(r *gin.Engine) {
-	health.For(r, func() health.Health {
-		c := make(map[string]string)
-		c["server"] = "UP"
-		if err := postgres.SqlDb.Ping().Error; err != nil {
-			c["postgres"] = "DOWN"
-			return health.Health{
-				Status:     "DOWN",
-				Components: c,
-			}
-		} else {
-			c["postgres"] = "UP"
-			return health.Health{
-				Status:     "UP",
-				Components: c,
-			}
-		}
-	})
+	health.For(r).
+		WithLiveness(serverStatus).
+		WithReadiness(serverStatus)
+
 	metrics.For(r)
 
 	api := r.Group("/api")
@@ -70,4 +57,23 @@ func setupRoutes(r *gin.Engine) {
 	v1 := api.Group("/v1")
 	v1Handler.SetupMessages(v1)
 
+}
+
+func serverStatus() health.Health {
+	c := make(map[string]string)
+	c["server"] = health.UP
+	db, err := postgres.DBConn.DB()
+	if err != nil {
+		c["postgres"] = health.DOWN
+	}
+
+	if err := db.Ping(); err != nil {
+		c["postgres"] = health.UP
+
+	} else {
+		c["postgres"] = health.DOWN
+	}
+	return health.Health{
+		Components: c,
+	}
 }
