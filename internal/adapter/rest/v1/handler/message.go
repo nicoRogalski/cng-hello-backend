@@ -6,7 +6,6 @@ import (
 	"github.com/rogalni/cng-hello-backend/internal/adapter/db/postgres/model"
 	"github.com/rogalni/cng-hello-backend/internal/adapter/rest/v1/dto"
 	"github.com/rogalni/cng-hello-backend/internal/service"
-	"github.com/rogalni/cng-hello-backend/pkg/gin/errors"
 )
 
 func SetupMessages(g *gin.RouterGroup) {
@@ -23,7 +22,7 @@ func getMessages(c *gin.Context) {
 	ms := service.NewMessageService()
 	m, err := ms.GetMessages(c.Request.Context())
 	if err != nil {
-		errors.Handle(c, err)
+		c.Error(err)
 		return
 	}
 	c.IndentedJSON(200, toDtos(m))
@@ -34,7 +33,7 @@ func getMessage(c *gin.Context) {
 	id := uuid.MustParse(c.Param("id"))
 	m, err := ms.GetMessage(c.Request.Context(), id)
 	if err != nil {
-		errors.Handle(c, err)
+		c.Error(err)
 		return
 	}
 
@@ -49,9 +48,8 @@ func createMessage(c *gin.Context) {
 	ms := service.NewMessageService()
 	var m *model.Message
 	c.Bind(&m)
-	err := ms.CreateMessage(c.Request.Context(), m)
-	if err != nil {
-		errors.Handle(c, err)
+	if err := ms.CreateMessage(c.Request.Context(), m); err != nil {
+		c.Error(err)
 		return
 	}
 	c.Status(204)
@@ -60,9 +58,8 @@ func createMessage(c *gin.Context) {
 func deleteMessage(c *gin.Context) {
 	ms := service.NewMessageService()
 	id := uuid.MustParse(c.Param("id"))
-	err := ms.DeleteMessage(c.Request.Context(), id)
-	if err != nil {
-		errors.Handle(c, err)
+	if err := ms.DeleteMessage(c.Request.Context(), id); err != nil {
+		c.Error(err)
 		return
 	}
 	c.Status(204)

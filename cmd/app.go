@@ -10,6 +10,7 @@ import (
 	v1Handler "github.com/rogalni/cng-hello-backend/internal/adapter/rest/v1/handler"
 	"github.com/rogalni/cng-hello-backend/pkg/auth"
 	"github.com/rogalni/cng-hello-backend/pkg/gin/auth/middleware"
+	gerrs "github.com/rogalni/cng-hello-backend/pkg/gin/errors"
 	"github.com/rogalni/cng-hello-backend/pkg/gin/health"
 	"github.com/rogalni/cng-hello-backend/pkg/gin/log"
 	"github.com/rogalni/cng-hello-backend/pkg/gin/metrics"
@@ -28,6 +29,7 @@ func main() {
 		gin.SetMode(gin.ReleaseMode)
 	}
 	r := gin.New()
+	r.Use(gerrs.ErrorHandler)
 	setupRoutes(r)
 	http.ListenAndServe(":"+config.App.Port, r)
 }
@@ -76,7 +78,7 @@ func serverStatus() (h health.Health) {
 		phc.Status = health.UP
 	}
 	c = append(c, phc)
-	
+
 	h.Components = c
 	return
 }
