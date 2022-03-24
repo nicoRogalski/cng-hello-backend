@@ -15,7 +15,7 @@ import (
 )
 
 func Setup(endpoint string, serviceName string, enabled bool) {
-	if enabled {
+	if !enabled {
 		return
 	}
 

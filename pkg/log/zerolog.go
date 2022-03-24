@@ -9,15 +9,22 @@ import (
 	"go.opentelemetry.io/otel/trace"
 )
 
-func Setup(serviceName string, isJson bool, isDebug bool) {
+func Setup(serviceName string, isJson bool, isDebug bool, isDev bool) {
 	// Setting up the default logger
-	log.Logger = zerolog.New(os.Stderr).
-		With().
-		Str("service", serviceName).
-		Timestamp().
-		Caller().
-		Logger()
-
+	if isDev {
+		log.Logger = zerolog.New(os.Stderr).
+			With().
+			Timestamp().
+			Caller().
+			Logger()
+	} else {
+		log.Logger = zerolog.New(os.Stderr).
+			With().
+			Str("service", serviceName).
+			Timestamp().
+			Caller().
+			Logger()
+	}
 	zerolog.TimeFieldFormat = zerolog.TimeFormatUnix
 
 	if isDebug {
@@ -38,6 +45,11 @@ type TracedZeroLog struct {
 
 func Ctx(c context.Context) *TracedZeroLog {
 	sc := trace.SpanFromContext(c).SpanContext()
+	return &TracedZeroLog{sc: sc}
+}
+
+func Span(span trace.Span) *TracedZeroLog {
+	sc := span.SpanContext()
 	return &TracedZeroLog{sc: sc}
 }
 

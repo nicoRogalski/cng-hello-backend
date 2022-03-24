@@ -12,6 +12,7 @@ type Config struct {
 	Port              string `mapstructure:"PORT"`
 	IsJsonLogging     bool   `mapstructure:"JSON_LOGGING"`
 	IsLogLevelDebug   bool   `mapstructure:"LOG_LEVEL_DEBUG"`
+	IsTracingEnabled  bool   `mapstructure:"TRACING_ENABLED"`
 	IsDevMode         bool   `mapstructure:"DEV_MODE"`
 	OAuthJwtIssuerUri string `mapstructure:"OAUTH_JWT_ISSUER_URI"`
 	OAuthJwtCertUri   string `mapstructure:"OAUTH_JWT_CERT_URI"`
@@ -28,6 +29,7 @@ func Setup() {
 	viper.SetDefault("PORT", "8080")
 	viper.SetDefault("JSON_LOGGING", true)
 	viper.SetDefault("LOG_LEVEL_DEBUG", false)
+	viper.SetDefault("TRACING_ENABLED", true)
 	viper.SetDefault("DEV_MODE", false)
 	viper.SetDefault("OAUTH_JWT_ISSUER_URI", "")
 	viper.SetDefault("OAUTH_JWT_CERT_URI", "")

@@ -9,27 +9,25 @@ import (
 	"github.com/rogalni/cng-hello-backend/internal/adapter/rest/handler"
 	v1Handler "github.com/rogalni/cng-hello-backend/internal/adapter/rest/v1/handler"
 	"github.com/rogalni/cng-hello-backend/pkg/auth"
-	"github.com/rogalni/cng-hello-backend/pkg/gin/auth/middleware"
-	gerrs "github.com/rogalni/cng-hello-backend/pkg/gin/errors"
 	"github.com/rogalni/cng-hello-backend/pkg/gin/health"
 	"github.com/rogalni/cng-hello-backend/pkg/gin/log"
 	"github.com/rogalni/cng-hello-backend/pkg/gin/metrics"
+	"github.com/rogalni/cng-hello-backend/pkg/gin/middleware"
 	"github.com/rogalni/cng-hello-backend/pkg/gin/tracer"
 	zlog "github.com/rogalni/cng-hello-backend/pkg/log"
 )
 
 func main() {
 	config.Setup()
-	isDev := config.App.IsDevMode
-	zlog.Setup(config.App.ServiceName, config.App.IsJsonLogging, config.App.IsLogLevelDebug)
-	tracer.Setup(config.App.JaegerEndpoint, config.App.ServiceName, isDev)
+	zlog.Setup(config.App.ServiceName, config.App.IsJsonLogging, config.App.IsLogLevelDebug, config.App.IsDevMode)
+	tracer.Setup(config.App.JaegerEndpoint, config.App.ServiceName, config.App.IsTracingEnabled)
 	auth.Setup(config.App.OAuthJwtCertUri)
 	postgres.InitConnection()
-	if !isDev {
+	if !config.App.IsDevMode {
 		gin.SetMode(gin.ReleaseMode)
 	}
 	r := gin.New()
-	r.Use(gerrs.ErrorHandler)
+	r.Use(middleware.ErrorHandler)
 	setupRoutes(r)
 	http.ListenAndServe(":"+config.App.Port, r)
 }
