@@ -31,13 +31,43 @@ func Setup(serviceName string, isJson bool, isDebug bool) {
 	}
 }
 
-func InfoWithTrace(c context.Context) *zerolog.Event {
-	sc := trace.SpanFromContext(c).SpanContext()
-	li := log.Info()
-	if sc.IsValid() {
-		li.Str("trace", sc.TraceID().String()).
-			Str("span", sc.SpanID().String())
-	}
-	return li
+// Wrapper arround zerolog for adding traceing from context into log messages
+type TracedZeroLog struct {
+	sc trace.SpanContext
+}
 
+func Ctx(c context.Context) *TracedZeroLog {
+	sc := trace.SpanFromContext(c).SpanContext()
+	return &TracedZeroLog{sc: sc}
+}
+
+func (zl *TracedZeroLog) Trace() *zerolog.Event {
+	return appendTrace(log.Trace(), zl)
+}
+func (zl *TracedZeroLog) Debug() *zerolog.Event {
+	return appendTrace(log.Debug(), zl)
+}
+
+func (zl *TracedZeroLog) Info() *zerolog.Event {
+	return appendTrace(log.Info(), zl)
+}
+
+func (zl *TracedZeroLog) Warn() *zerolog.Event {
+	return appendTrace(log.Warn(), zl)
+}
+
+func (zl *TracedZeroLog) Error() *zerolog.Event {
+	return appendTrace(log.Error(), zl)
+}
+
+func (zl *TracedZeroLog) Fatal() *zerolog.Event {
+	return appendTrace(log.Fatal(), zl)
+}
+
+func appendTrace(e *zerolog.Event, zl *TracedZeroLog) *zerolog.Event {
+	if zl.sc.IsValid() {
+		e.Str("trace", zl.sc.TraceID().String()).
+			Str("span", zl.sc.SpanID().String())
+	}
+	return e
 }
