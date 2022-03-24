@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/rogalni/cng-hello-backend/config"
+	"github.com/rogalni/cng-hello-backend/internal/adapter/db/postgres/model"
 	"github.com/uptrace/opentelemetry-go-extra/otelgorm"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -43,4 +44,6 @@ func InitConnection() {
 	// 	panic(err)
 	// }
 	DBConn = db
+
+	db.AutoMigrate(&model.Message{})
 }

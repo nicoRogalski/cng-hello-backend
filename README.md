@@ -42,9 +42,11 @@ docker-compose up
 - Architecture (example: https://medium.com/@matiasvarela/hexagonal-architecture-in-go-cfd4e436faa3)
 - Rest-Api (https://github.com/gin-gonic/gin)
 - Logger for json logging (https://github.com/rs/zerolog)
+- Support for UUID
 
 ### Database
 - Added usage of gorm for postgresql (https://github.com/go-gorm/gorm)
+- Added migration with gorm
 
 ### Build/Deployment
 - Dockerfile
@@ -75,12 +77,6 @@ docker-compose up
 # 
 
 ## 4. In progress:
-
-### Database
-- Setup Table with a migration tool(https://github.com/golang-migrate/migrate)
-
-### Monitoring
-- Setup grafana that the dashboard is predefined
 
 #
 

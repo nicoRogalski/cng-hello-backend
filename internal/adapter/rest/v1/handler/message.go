@@ -2,6 +2,7 @@ package handler
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 	"github.com/rogalni/cng-hello-backend/internal/adapter/db/postgres/model"
 	"github.com/rogalni/cng-hello-backend/internal/adapter/rest/v1/dto"
 	"github.com/rogalni/cng-hello-backend/internal/service"
@@ -30,7 +31,7 @@ func getMessages(c *gin.Context) {
 
 func getMessage(c *gin.Context) {
 	ms := service.NewMessageService()
-	id := c.Param("id")
+	id := uuid.MustParse(c.Param("id"))
 	m, err := ms.GetMessage(c.Request.Context(), id)
 	if err != nil {
 		errors.Handle(c, err)
@@ -58,7 +59,7 @@ func createMessage(c *gin.Context) {
 
 func deleteMessage(c *gin.Context) {
 	ms := service.NewMessageService()
-	id := c.Param("id")
+	id := uuid.MustParse(c.Param("id"))
 	err := ms.DeleteMessage(c.Request.Context(), id)
 	if err != nil {
 		errors.Handle(c, err)

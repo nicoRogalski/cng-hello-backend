@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 
+	"github.com/google/uuid"
 	"github.com/rogalni/cng-hello-backend/internal/adapter/db/postgres"
 	"github.com/rogalni/cng-hello-backend/internal/adapter/db/postgres/model"
 	perrors "github.com/rogalni/cng-hello-backend/pkg/errors"
@@ -24,15 +25,17 @@ func (mr MessageRepository) GetMessages(ctx context.Context) (m []*model.Message
 	return
 }
 
-func (mr MessageRepository) GetMessage(ctx context.Context, id string) (m *model.Message, err error) {
+func (mr MessageRepository) GetMessage(ctx context.Context, id uuid.UUID) (m *model.Message, err error) {
 	log.Debug().Msg("Get message")
 	db := postgres.DBConn
 	err = db.WithContext(ctx).Where("id = ?", id).First(&m).Error
-	if errors.Is(err, gorm.ErrRecordNotFound) {
-		err = perrors.NewErrorNotFound("Message not found")
-	} else {
-		log.Err(err).Msg("Error getting message")
-		err = perrors.NewErrInternalServer("Internal Server Error")
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			err = perrors.NewErrorNotFound("Message not found")
+		} else {
+			log.Err(err).Msg("Error getting message")
+			err = perrors.NewErrInternalServer("Internal Server Error")
+		}
 	}
 	return
 }
@@ -45,7 +48,7 @@ func (mr MessageRepository) CreateMessage(ctx context.Context, m *model.Message)
 	return err
 }
 
-func (mr MessageRepository) DeleteMessage(ctx context.Context, id string) error {
+func (mr MessageRepository) DeleteMessage(ctx context.Context, id uuid.UUID) error {
 	log.Debug().Msgf("Delete message id: %s", id)
 	db := postgres.DBConn
 	err := db.WithContext(ctx).Delete(&model.Message{Id: id}).Error
