@@ -44,7 +44,9 @@ func (mr MessageRepository) CreateMessage(ctx context.Context, m *model.Message)
 	log.Debug().Msgf("Create message code: %s", m.Code)
 	db := postgres.DBConn
 	err := db.WithContext(ctx).Create(&m).Error
-	log.Err(err).Msg("Error creating message")
+	if err != nil {
+		log.Err(err).Msg("Error creating message")
+	}
 	return err
 }
 
@@ -52,6 +54,8 @@ func (mr MessageRepository) DeleteMessage(ctx context.Context, id uuid.UUID) err
 	log.Debug().Msgf("Delete message id: %s", id)
 	db := postgres.DBConn
 	err := db.WithContext(ctx).Delete(&model.Message{Id: id}).Error
-	log.Err(err).Msg("Error deleting message")
+	if err != nil {
+		log.Err(err).Msg("Error deleting message")
+	}
 	return err
 }

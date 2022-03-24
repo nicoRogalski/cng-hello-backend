@@ -11,9 +11,9 @@ import (
 func SetupMessages(g *gin.RouterGroup) {
 	messages := g.Group("/messages")
 	{
-		messages.GET("/", getMessages)
+		messages.GET("", getMessages)
 		messages.GET("/:id", getMessage)
-		messages.POST("/", createMessage)
+		messages.POST("", createMessage)
 		messages.DELETE("/:id", deleteMessage)
 	}
 }

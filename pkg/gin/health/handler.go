@@ -27,11 +27,13 @@ type Component struct {
 }
 
 func For(r *gin.Engine) *HealthHandler {
-	hh := &HealthHandler{
-		rg: r.Group("/health"),
+	rg := r.Group("/health")
+	{
+		rg.GET("", getHealth)
 	}
-	hh.rg.GET("/", getHealth)
-
+	hh := &HealthHandler{
+		rg: rg,
+	}
 	return hh
 }
 
@@ -64,7 +66,7 @@ func (h *HealthHandler) WithLiveness(sf StatusFunc) *HealthHandler {
 }
 
 func getHealth(c *gin.Context) {
-	c.JSON(200, &Health{
+	c.IndentedJSON(200, &Health{
 		Status: UP,
 	})
 }
