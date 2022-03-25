@@ -60,12 +60,6 @@ func setupRoutes(r *gin.Engine) {
 }
 
 func serverStatus() (h health.Health) {
-	c := []health.Component{
-		{
-			Name:   "server",
-			Status: health.UP,
-		},
-	}
 
 	phc := health.Component{Name: "postgres"}
 	if db, err := postgres.DBConn.DB(); err != nil {
@@ -75,8 +69,7 @@ func serverStatus() (h health.Health) {
 	} else {
 		phc.Status = health.UP
 	}
-	c = append(c, phc)
 
-	h.Components = c
+	h.Components = []health.Component{phc}
 	return
 }
