@@ -12,6 +12,13 @@ import (
 	"gorm.io/gorm"
 )
 
+type IMessageRepository interface {
+	GetMessages(ctx context.Context) ([]*model.Message, error)
+	GetMessage(ctx context.Context, id uuid.UUID) (*model.Message, error)
+	CreateMessage(ctx context.Context, m *model.Message) error
+	DeleteMessage(ctx context.Context, id uuid.UUID) error
+}
+
 type MessageRepository struct{}
 
 func NewMessageRepository() *MessageRepository {

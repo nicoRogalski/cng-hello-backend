@@ -10,7 +10,7 @@ import (
 )
 
 type MessageService struct {
-	messageRepository *repository.MessageRepository
+	messageRepository repository.IMessageRepository
 }
 
 func NewMessageService() *MessageService {

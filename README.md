@@ -74,6 +74,8 @@ docker-compose up
 ### Pkg
 - Added pgk for public usage of default implementations for gin/jwt/oidc (Should be later generalized and outsourced)
 
+### Testing
+- Added example testing
 # 
 
 ## 4. In progress:
@@ -84,9 +86,6 @@ docker-compose up
 
 ### Rest
 - Add api as generated from openapi.yml
-
-### Testing
-- Apply testing for endpoints and services
 
 #
 

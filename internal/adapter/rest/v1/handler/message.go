@@ -31,7 +31,9 @@ func getMessages(c *gin.Context) {
 func getMessage(c *gin.Context) {
 	ms := service.NewMessageService()
 	id := uuid.MustParse(c.Param("id"))
-	m, err := ms.GetMessage(c.Request.Context(), id)
+	r := c.Request
+	cx := r.Context()
+	m, err := ms.GetMessage(cx, id)
 	if err != nil {
 		c.Error(err)
 		return
