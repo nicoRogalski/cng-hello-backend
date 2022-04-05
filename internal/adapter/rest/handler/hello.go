@@ -19,7 +19,7 @@ func GetHello(c *gin.Context) {
 	zlog.Ctx(c.Request.Context()).Info().Msg("Get Hello with trace infos from context")
 	//Example with span
 	zlog.Span(span).Info().Msg("Get Hello with trace infos from span")
-	
+
 	c.IndentedJSON(200, &HelloMessage{
 		Text: "Welcome to cloud native go",
 	})

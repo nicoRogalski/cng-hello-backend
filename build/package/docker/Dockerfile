@@ -19,21 +19,19 @@ RUN go test -v -buildvcs=false ./...
 RUN go build -buildvcs=false -ldflags "-s -w" -o app ./cmd
 RUN upx -9 /build/app
 
+RUN addgroup -S app \
+    && adduser -S -u 1000 -g app app
+
 # Build a small image
-FROM gcr.io/distroless/static:latest
+FROM scratch
 
 LABEL maintainer="nico.rogalski@msg-david.de"
 LABEL cng-hello-backend.project="CngHelloBackend"
 LABEL cng-hello-backend.version="1.0.0"
 
-# RUN echo "adding run user go to system" \
-#     && addgroup -S go -g 1000 \
-#     && adduser -S go -u 1000 -G go
-
+COPY --from=builder /etc/passwd /etc/passwd
 COPY --from=builder /build/app /
 
-# USER 1000
-
 EXPOSE 8080
-
-CMD ["/app"]
+USER 1000
+ENTRYPOINT ["/app"]
