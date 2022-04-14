@@ -10,7 +10,6 @@ WORKDIR /build
 
 COPY . .
 RUN go mod download
-RUN go test -v ./...
 RUN go build -ldflags "-s -w" -o app ./cmd
 
 RUN apk add upx
