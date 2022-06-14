@@ -35,7 +35,7 @@
         "dashes": false,
         "datasource": {
           "type": "prometheus",
-          "uid": "-Q_d3HBnz"
+          "uid": "fU2FIb97k"
         },
         "editable": true,
         "error": false,
@@ -141,7 +141,7 @@
         "dashes": false,
         "datasource": {
           "type": "prometheus",
-          "uid": "-Q_d3HBnz"
+          "uid": "fU2FIb97k"
         },
         "editable": true,
         "error": false,
@@ -246,7 +246,7 @@
         "dashes": false,
         "datasource": {
           "type": "prometheus",
-          "uid": "-Q_d3HBnz"
+          "uid": "fU2FIb97k"
         },
         "editable": true,
         "error": false,
@@ -370,7 +370,7 @@
         "dashes": false,
         "datasource": {
           "type": "prometheus",
-          "uid": "-Q_d3HBnz"
+          "uid": "fU2FIb97k"
         },
         "editable": true,
         "error": false,
@@ -494,7 +494,7 @@
         "dashes": false,
         "datasource": {
           "type": "prometheus",
-          "uid": "-Q_d3HBnz"
+          "uid": "fU2FIb97k"
         },
         "editable": true,
         "error": false,
@@ -585,7 +585,7 @@
         "dashes": false,
         "datasource": {
           "type": "prometheus",
-          "uid": "-Q_d3HBnz"
+          "uid": "fU2FIb97k"
         },
         "editable": true,
         "error": false,
@@ -676,7 +676,7 @@
         "dashes": false,
         "datasource": {
           "type": "prometheus",
-          "uid": "-Q_d3HBnz"
+          "uid": "fU2FIb97k"
         },
         "editable": true,
         "error": false,
@@ -767,7 +767,7 @@
         "dashes": false,
         "datasource": {
           "type": "prometheus",
-          "uid": "-Q_d3HBnz"
+          "uid": "fU2FIb97k"
         },
         "editable": true,
         "error": false,
@@ -867,7 +867,7 @@
           },
           "datasource": {
             "type": "prometheus",
-            "uid": "-Q_d3HBnz"
+            "uid": "fU2FIb97k"
           },
           "definition": "",
           "hide": 0,
@@ -897,7 +897,7 @@
           },
           "datasource": {
             "type": "prometheus",
-            "uid": "-Q_d3HBnz"
+            "uid": "fU2FIb97k"
           },
           "definition": "",
           "hide": 0,

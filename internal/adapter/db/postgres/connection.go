@@ -20,8 +20,10 @@ func InitConnection() {
 	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable",
 		config.App.PostgresHost, config.App.PostgresUser, config.App.PostresPassword, config.App.PostgresDb, config.App.PostgresPort)
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{
-		PrepareStmt: true,
-		Logger:      logger.Default.LogMode(logger.Silent),
+		PrepareStmt:     true,
+		QueryFields:     true,
+		CreateBatchSize: 50,
+		Logger:          logger.Default.LogMode(logger.Silent),
 	})
 	if err != nil {
 		panic("Could not connect to db")
@@ -35,8 +37,9 @@ func InitConnection() {
 	if err != nil {
 		panic("Could not connect to sql db")
 	}
-	sqlDB.SetMaxIdleConns(10)
-	sqlDB.SetMaxOpenConns(100)
+	maxCon := 100
+	sqlDB.SetMaxOpenConns(maxCon)
+	sqlDB.SetMaxIdleConns(int(float64(maxCon) * 0.1))
 	sqlDB.SetConnMaxLifetime(time.Hour)
 	// Ensure that the connection is established
 	// Disabled in favour of health endpoints

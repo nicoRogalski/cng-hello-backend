@@ -2,9 +2,9 @@ package handler
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/rogalni/cng-hello-backend/internal/utils"
-	"github.com/rogalni/cng-hello-backend/pkg/gin/tracer"
+	"github.com/rogalni/cng-hello-backend/pkg/gin/auth"
 	zlog "github.com/rogalni/cng-hello-backend/pkg/log"
+	"github.com/rogalni/cng-hello-backend/pkg/tracer"
 	"github.com/rs/zerolog/log"
 )
 
@@ -26,7 +26,7 @@ func GetHello(c *gin.Context) {
 }
 
 func GetHelloSecure(c *gin.Context) {
-	roles := utils.GetJWTRoles(c)
+	roles := auth.GetJWTRoles(c)
 	log.Info().Msgf("Authorized with role: %s", roles)
 	span := tracer.Start(c.Request.Context(), "GetHelloSecure")
 	defer span.End()

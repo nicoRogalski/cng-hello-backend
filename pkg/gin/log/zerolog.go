@@ -41,7 +41,7 @@ func logger(s string) gin.HandlerFunc {
 			msg = "Request"
 		}
 
-		cData := &ginHands{
+		cData := ginHands{
 			SerName:    s,
 			Path:       path,
 			Latency:    time.Since(t),

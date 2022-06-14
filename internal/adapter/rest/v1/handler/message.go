@@ -8,19 +8,22 @@ import (
 	"github.com/rogalni/cng-hello-backend/internal/service"
 )
 
-func SetupMessages(g *gin.RouterGroup) {
-	messages := g.Group("/messages")
-	{
-		messages.GET("", getMessages)
-		messages.GET("/:id", getMessage)
-		messages.POST("", createMessage)
-		messages.DELETE("/:id", deleteMessage)
-	}
+type messageHandler struct {
+	ms *service.MessageService
 }
 
-func getMessages(c *gin.Context) {
-	ms := service.NewMessageService()
-	m, err := ms.GetMessages(c.Request.Context())
+func RegisterMessages(g *gin.RouterGroup) {
+	h := messageHandler{ms: service.NewMessageService()}
+	messages := g.Group("/messages")
+	messages.GET("", h.getMessages)
+	messages.GET("/:id", h.getMessage)
+	messages.POST("", h.createMessage)
+	messages.DELETE("/:id", h.deleteMessage)
+
+}
+
+func (h messageHandler) getMessages(c *gin.Context) {
+	m, err := h.ms.GetMessages(c.Request.Context())
 	if err != nil {
 		c.Error(err)
 		return
@@ -28,17 +31,13 @@ func getMessages(c *gin.Context) {
 	c.IndentedJSON(200, toDtos(m))
 }
 
-func getMessage(c *gin.Context) {
-	ms := service.NewMessageService()
+func (h messageHandler) getMessage(c *gin.Context) {
 	id := uuid.MustParse(c.Param("id"))
-	r := c.Request
-	cx := r.Context()
-	m, err := ms.GetMessage(cx, id)
+	m, err := h.ms.GetMessage(c.Request.Context(), id)
 	if err != nil {
 		c.Error(err)
 		return
 	}
-
 	c.IndentedJSON(200, &dto.Message{
 		Id:   m.Id,
 		Code: m.Code,
@@ -46,25 +45,31 @@ func getMessage(c *gin.Context) {
 	})
 }
 
-func createMessage(c *gin.Context) {
-	ms := service.NewMessageService()
-	var m *model.Message
+func (h messageHandler) createMessage(c *gin.Context) {
+	var m *dto.Message
 	c.Bind(&m)
-	if err := ms.CreateMessage(c.Request.Context(), m); err != nil {
+	if err := h.ms.CreateMessage(c.Request.Context(), toEntity(m)); err != nil {
 		c.Error(err)
 		return
 	}
 	c.Status(204)
 }
 
-func deleteMessage(c *gin.Context) {
-	ms := service.NewMessageService()
+func (h messageHandler) deleteMessage(c *gin.Context) {
 	id := uuid.MustParse(c.Param("id"))
-	if err := ms.DeleteMessage(c.Request.Context(), id); err != nil {
+	if err := h.ms.DeleteMessage(c.Request.Context(), id); err != nil {
 		c.Error(err)
 		return
 	}
 	c.Status(204)
+}
+
+func toEntity(m *dto.Message) *model.Message {
+	return &model.Message{
+		Id:   m.Id,
+		Code: m.Code,
+		Text: m.Text,
+	}
 }
 
 func toDto(m *model.Message) *dto.Message {

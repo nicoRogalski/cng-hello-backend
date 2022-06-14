@@ -12,5 +12,4 @@ func For(r *gin.Engine) {
 func getMetrics(c *gin.Context) {
 	h := promhttp.Handler()
 	h.ServeHTTP(c.Writer, c.Request)
-
 }

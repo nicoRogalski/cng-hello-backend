@@ -6,7 +6,7 @@ Showcase of a cloud native application in Go.
 
 ### Local
 ```
-go run .\cmd\app.go
+go run .\cmd\server.go
 ```
 
 ### Local with database
@@ -14,7 +14,7 @@ go run .\cmd\app.go
 cd test/docker/cng-hello-backend-ressources
 docker-compose up
 cd ../../../
-go run .\cmd\app.go
+go run .\cmd\server.go
 ```
 
 ### docker-compose
@@ -47,6 +47,7 @@ docker-compose up
 ### Database
 - Added usage of gorm for postgresql (https://github.com/go-gorm/gorm)
 - Added migration with gorm
+- Added optimistic locking
 
 ### Build/Deployment
 - Dockerfile
@@ -71,9 +72,6 @@ docker-compose up
 ### Error handling
 - Added general error handling and middleware for gin.
 
-### Pkg
-- Added pgk for public usage of default implementations for gin/jwt/oidc (Should be later generalized and outsourced)
-
 ### Testing
 - Added example testing
 # 
@@ -90,4 +88,6 @@ docker-compose up
 #
 
 ## 7. Future concepts
-- https://github.com/open-telemetry/opentelemetry-go
+https://github.com/open-telemetry/opentelemetry-go
+- Will  provide logging and metrics out of the box in the future
+
