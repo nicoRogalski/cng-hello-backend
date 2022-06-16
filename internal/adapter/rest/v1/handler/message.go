@@ -6,6 +6,9 @@ import (
 	"github.com/rogalni/cng-hello-backend/internal/adapter/db/postgres/model"
 	"github.com/rogalni/cng-hello-backend/internal/adapter/rest/v1/dto"
 	"github.com/rogalni/cng-hello-backend/internal/service"
+	"github.com/rogalni/cng-hello-backend/pkg/gin/auth"
+	"github.com/rogalni/cng-hello-backend/pkg/gin/middleware"
+	"github.com/rogalni/cng-hello-backend/pkg/log"
 )
 
 type messageHandler struct {
@@ -18,7 +21,7 @@ func RegisterMessages(g *gin.RouterGroup) {
 	messages.GET("", h.getMessages)
 	messages.GET("/:id", h.getMessage)
 	messages.POST("", h.createMessage)
-	messages.DELETE("/:id", h.deleteMessage)
+	messages.DELETE("/:id", middleware.ValidateJWT, h.deleteMessage)
 
 }
 
@@ -46,7 +49,7 @@ func (h messageHandler) getMessage(c *gin.Context) {
 }
 
 func (h messageHandler) createMessage(c *gin.Context) {
-	var m *dto.Message
+	var m *dto.CreateMessage
 	c.Bind(&m)
 	if err := h.ms.CreateMessage(c.Request.Context(), toEntity(m)); err != nil {
 		c.Error(err)
@@ -57,6 +60,8 @@ func (h messageHandler) createMessage(c *gin.Context) {
 
 func (h messageHandler) deleteMessage(c *gin.Context) {
 	id := uuid.MustParse(c.Param("id"))
+	roles := auth.GetJWTRoles(c)
+	log.Ctx(c.Request.Context()).Info().Msgf("Authorized with role: %s", roles)
 	if err := h.ms.DeleteMessage(c.Request.Context(), id); err != nil {
 		c.Error(err)
 		return
@@ -64,9 +69,8 @@ func (h messageHandler) deleteMessage(c *gin.Context) {
 	c.Status(204)
 }
 
-func toEntity(m *dto.Message) *model.Message {
+func toEntity(m *dto.CreateMessage) *model.Message {
 	return &model.Message{
-		Id:   m.Id,
 		Code: m.Code,
 		Text: m.Text,
 	}

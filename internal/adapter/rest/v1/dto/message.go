@@ -7,3 +7,8 @@ type Message struct {
 	Code string    `json:"code"`
 	Text string    `json:"text"`
 }
+
+type CreateMessage struct {
+	Code string    `json:"code"`
+	Text string    `json:"text"`
+}

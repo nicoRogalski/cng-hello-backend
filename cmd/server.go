@@ -4,12 +4,12 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/gin-contrib/gzip"
 	"github.com/gin-gonic/gin"
 
 	"github.com/rogalni/cng-hello-backend/config"
 	"github.com/rogalni/cng-hello-backend/internal/adapter/db/postgres"
-	"github.com/rogalni/cng-hello-backend/internal/adapter/rest/handler"
-	v1Handler "github.com/rogalni/cng-hello-backend/internal/adapter/rest/v1/handler"
+	"github.com/rogalni/cng-hello-backend/internal/adapter/rest/v1/handler"
 	"github.com/rogalni/cng-hello-backend/pkg/auth"
 	"github.com/rogalni/cng-hello-backend/pkg/gin/health"
 	"github.com/rogalni/cng-hello-backend/pkg/gin/log"
@@ -33,7 +33,7 @@ func main() {
 	}
 	r := gin.New()
 	r.Use(middleware.ErrorHandler)
-
+	r.Use(gzip.Gzip(gzip.DefaultCompression))
 	setupRoutes(r)
 
 	port := config.App.Port
@@ -52,16 +52,9 @@ func setupRoutes(r *gin.Engine) {
 	api.Use(otelgin.Middleware(config.App.ServiceName))
 	log.ForGroup(api, config.App.ServiceName)
 
-	api.GET("/hello", handler.GetHello)
-
-	// "/secure" simulates a path where all endpoints needs to be secured via jwt
-	s := api.Group("/secure", middleware.ValidateJWT)
-	s.GET("/hello", handler.GetHelloSecure)
-
 	// "v1" simulates a real world example of endpoints
 	v1 := api.Group("/v1")
-	v1Handler.RegisterMessages(v1)
-
+	handler.RegisterMessages(v1)
 }
 
 func serverStatus() (h health.Health) {

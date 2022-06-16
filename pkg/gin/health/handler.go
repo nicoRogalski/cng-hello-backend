@@ -4,27 +4,10 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-var (
-	UP   = "UP"
-	DOWN = "DOWN"
-)
-
 type HealthHandler struct {
 	rg *gin.RouterGroup
 }
-
 type StatusFunc func() Health
-
-type Health struct {
-	Status     string      `json:"status"`
-	Code       int         `json:"-"`
-	Components []Component `json:"components,omitempty"`
-}
-
-type Component struct {
-	Name   string
-	Status string
-}
 
 func For(r *gin.Engine) *HealthHandler {
 	rg := r.Group("/health")
@@ -54,6 +37,7 @@ func (h *HealthHandler) WithReadiness(sf StatusFunc) *HealthHandler {
 func (h *HealthHandler) WithLiveness(sf StatusFunc) *HealthHandler {
 	h.rg.GET("/liveness", func(c *gin.Context) {
 		es := sf()
+		es.Status = UP
 		for _, v := range es.Components {
 			if v.Status == DOWN {
 				es.Status = DOWN

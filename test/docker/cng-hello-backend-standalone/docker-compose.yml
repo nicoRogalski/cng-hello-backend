@@ -13,7 +13,6 @@ services:
       POSTGRES_PASSWORD: "password"
       POSTGRES_DB: "cngdb"
       JAEGER_ENDPOINT: "http://jaeger:14268/api/traces"
-      DEV_MODE: "false"
     depends_on:
       - prometheus
       - jaeger

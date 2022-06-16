@@ -3,7 +3,6 @@ FROM golang:1.18-alpine AS builder
 # Set necessary environmet variables needed for our image
 ENV GOOS=linux \
     GOARCH=amd64 \
-    # CGO_ENABLED=0 \
     GOFLAGS=-buildvcs=false
 
 WORKDIR /build
@@ -16,7 +15,7 @@ RUN apk add upx
 RUN upx --best --lzma /build/server
 
 # Build a small image
-FROM alpine AS final
+FROM alpine:3.16 AS final
 
 LABEL maintainer="nico.rogalski@msg-david.de"
 LABEL cng-hello-backend.project="CngHelloBackend"

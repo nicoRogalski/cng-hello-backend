@@ -41,10 +41,8 @@ func (mr MRMock) DeleteMessage(ctx context.Context, id uuid.UUID) error {
 }
 
 func TestMessageService_GetMessage(t *testing.T) {
-	mrm:= new(MRMock)
-	
 	mms := MessageService{
-		messageRepository: mrm,
+		messageRepository: &MRMock{},
 	}
 
 	type args struct {
