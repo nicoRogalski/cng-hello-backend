@@ -9,32 +9,32 @@ import (
 	"github.com/rogalni/cng-hello-backend/pkg/log"
 )
 
-type MessageService struct {
-	messageRepository repository.IMessageRepository
+type Message struct {
+	messageRepository repository.IMessage
 }
 
-func NewMessageService() *MessageService {
-	return &MessageService{
-		messageRepository: repository.NewMessageRepository(),
+func NewMessage() *Message {
+	return &Message{
+		messageRepository: repository.NewMessage(),
 	}
 }
 
-func (ms MessageService) GetMessages(ctx context.Context) ([]*model.Message, error) {
+func (ms Message) GetMessages(ctx context.Context) ([]*model.Message, error) {
 	log.Ctx(ctx).Info().Msg("Get message from service with trace infos")
-	return ms.messageRepository.GetMessages(ctx)
+	return ms.messageRepository.FindAll(ctx)
 }
 
-func (ms MessageService) GetMessage(ctx context.Context, id uuid.UUID) (*model.Message, error) {
+func (ms Message) GetMessage(ctx context.Context, id uuid.UUID) (*model.Message, error) {
 	log.Ctx(ctx).Info().Msg("Get message from service with trace infos")
-	return ms.messageRepository.GetMessage(ctx, id)
+	return ms.messageRepository.FindById(ctx, id)
 }
 
-func (ms MessageService) CreateMessage(ctx context.Context, m *model.Message) error {
+func (ms Message) CreateMessage(ctx context.Context, m *model.Message) error {
 	log.Ctx(ctx).Info().Msg("Create message from service with trace infos")
-	return ms.messageRepository.CreateMessage(ctx, m)
+	return ms.messageRepository.Create(ctx, m)
 }
 
-func (ms MessageService) DeleteMessage(ctx context.Context, id uuid.UUID) error {
+func (ms Message) DeleteMessage(ctx context.Context, id uuid.UUID) error {
 	log.Ctx(ctx).Info().Msg("Delete message from service with trace infos")
-	return ms.messageRepository.DeleteMessage(ctx, id)
+	return ms.messageRepository.Delete(ctx, id)
 }

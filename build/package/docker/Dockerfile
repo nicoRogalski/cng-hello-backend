@@ -9,7 +9,7 @@ WORKDIR /build
 
 COPY . .
 RUN go mod download
-RUN go build -ldflags "-s -w" -o server ./cmd
+RUN go build -ldflags "-s -w" -o server ./cmd/server
 
 RUN apk add upx
 RUN upx --best --lzma /build/server

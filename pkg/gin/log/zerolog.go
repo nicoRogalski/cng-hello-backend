@@ -17,18 +17,10 @@ type ginHands struct {
 	MsgStr     string
 }
 
-func ForGroup(r *gin.RouterGroup, serviceName string) {
-	r.Use(logger(serviceName))
-}
-
-func ForEngine(r *gin.Engine, serviceName string) {
-	r.Use(logger(serviceName))
-}
-
-func logger(s string) gin.HandlerFunc {
+func Logger(s string) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		t := time.Now()
 		// before request
+		t := time.Now()
 		path := c.Request.URL.Path
 		raw := c.Request.URL.RawQuery
 		c.Next()

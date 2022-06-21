@@ -2,7 +2,6 @@ package auth
 
 import (
 	"errors"
-	"fmt"
 	"time"
 
 	"github.com/MicahParks/keyfunc"
@@ -15,7 +14,7 @@ const (
 
 var Jwks *keyfunc.JWKS
 
-func SetupAuth(oauthJwtCertUrl string) {
+func Setup(oauthJwtCertUrl string) {
 	if oauthJwtCertUrl == "" {
 		log.Warn().Msg("Server starts without OIDC Endpoint for secret")
 		return
@@ -33,7 +32,7 @@ func SetupAuth(oauthJwtCertUrl string) {
 	// Create the JWKS from the resource at the given URL.
 	j, err := keyfunc.Get(oauthJwtCertUrl, options)
 	if err != nil {
-		log.Warn().Msg(fmt.Sprintf("Failed to create JWKS from resource at the given URL.\nError: %s", err.Error()))
+		log.Warn().Msgf("Failed to create JWKS from resource at the given URL.\nError: %s", err.Error())
 	}
 	Jwks = j
 }

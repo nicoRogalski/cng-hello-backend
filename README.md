@@ -6,7 +6,7 @@ Showcase of a cloud native application in Go.
 
 ### Local
 ```
-go run .\cmd\server.go
+go run .\cmd\server
 ```
 
 ### Local with database
@@ -14,7 +14,7 @@ go run .\cmd\server.go
 cd test/docker/cng-hello-backend-ressources
 docker-compose up
 cd ../../../
-go run .\cmd\server.go
+go run .\cmd\server
 ```
 
 ### docker-compose
@@ -34,7 +34,6 @@ docker-compose up
 
 ### 20.02.2022
 - Some general packages for tracing, logging, and auth with a clean api needs to be implemented in order to not always do everything from scratch
-
 
 ## 3. Done
 ### General

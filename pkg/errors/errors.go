@@ -14,7 +14,7 @@ func NewErrInternalServer(msg string) ErrInternalServer {
 }
 
 func (eis ErrInternalServer) Error() string {
-	return fmt.Sprintf("Error code: %d, message: %s", eis.Code, eis.Message)
+	return errToString(eis.Code, eis.Message)
 }
 
 type ErrNotFound struct {
@@ -27,5 +27,22 @@ func NewErrorNotFound(msg string) ErrNotFound {
 }
 
 func (enf ErrNotFound) Error() string {
-	return fmt.Sprintf("Error code: %d, message: %s", enf.Code, enf.Message)
+	return errToString(enf.Code, enf.Message)
+}
+
+type errBadRequest struct {
+	Code    int
+	Message string
+}
+
+func NewErrBadRequest(msg string) errBadRequest {
+	return errBadRequest{Code: 400, Message: msg}
+}
+
+func (ebr errBadRequest) Error() string {
+	return errToString(ebr.Code, ebr.Message)
+}
+
+func errToString(code int, message string) string {
+	return fmt.Sprintf("Error code: %d, message: %s", code, message)
 }

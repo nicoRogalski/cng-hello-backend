@@ -12,27 +12,27 @@ import (
 	"gorm.io/gorm"
 )
 
-type IMessageRepository interface {
-	GetMessages(ctx context.Context) ([]*model.Message, error)
-	GetMessage(ctx context.Context, id uuid.UUID) (*model.Message, error)
-	CreateMessage(ctx context.Context, m *model.Message) error
-	DeleteMessage(ctx context.Context, id uuid.UUID) error
+type IMessage interface {
+	FindAll(ctx context.Context) ([]*model.Message, error)
+	FindById(ctx context.Context, id uuid.UUID) (*model.Message, error)
+	Create(ctx context.Context, m *model.Message) error
+	Delete(ctx context.Context, id uuid.UUID) error
 }
 
-type MessageRepository struct{}
+type Message struct{}
 
-func NewMessageRepository() *MessageRepository {
-	return &MessageRepository{}
+func NewMessage() *Message {
+	return &Message{}
 }
 
-func (mr MessageRepository) GetMessages(ctx context.Context) (m []*model.Message, err error) {
+func (mr Message) FindAll(ctx context.Context) (m []*model.Message, err error) {
 	log.Debug().Msg("Get messages")
 	db := postgres.DBConn
 	err = db.WithContext(ctx).Find(&m).Error
 	return
 }
 
-func (mr MessageRepository) GetMessage(ctx context.Context, id uuid.UUID) (m *model.Message, err error) {
+func (mr Message) FindById(ctx context.Context, id uuid.UUID) (m *model.Message, err error) {
 	log.Debug().Msg("Get message")
 	db := postgres.DBConn
 	err = db.WithContext(ctx).Where("id = ?", id).First(&m).Error
@@ -47,7 +47,7 @@ func (mr MessageRepository) GetMessage(ctx context.Context, id uuid.UUID) (m *mo
 	return
 }
 
-func (mr MessageRepository) CreateMessage(ctx context.Context, m *model.Message) error {
+func (mr Message) Create(ctx context.Context, m *model.Message) error {
 	log.Debug().Msgf("Create message code: %s", m.Code)
 	db := postgres.DBConn
 	err := db.WithContext(ctx).Create(&m).Error
@@ -57,7 +57,7 @@ func (mr MessageRepository) CreateMessage(ctx context.Context, m *model.Message)
 	return err
 }
 
-func (mr MessageRepository) DeleteMessage(ctx context.Context, id uuid.UUID) error {
+func (mr Message) Delete(ctx context.Context, id uuid.UUID) error {
 	log.Debug().Msgf("Delete message id: %s", id)
 	db := postgres.DBConn
 	err := db.WithContext(ctx).Delete(&model.Message{Id: id}).Error

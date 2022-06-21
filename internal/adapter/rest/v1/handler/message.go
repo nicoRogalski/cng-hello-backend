@@ -6,26 +6,20 @@ import (
 	"github.com/rogalni/cng-hello-backend/internal/adapter/db/postgres/model"
 	"github.com/rogalni/cng-hello-backend/internal/adapter/rest/v1/dto"
 	"github.com/rogalni/cng-hello-backend/internal/service"
+	"github.com/rogalni/cng-hello-backend/pkg/errors"
 	"github.com/rogalni/cng-hello-backend/pkg/gin/auth"
-	"github.com/rogalni/cng-hello-backend/pkg/gin/middleware"
 	"github.com/rogalni/cng-hello-backend/pkg/log"
 )
 
-type messageHandler struct {
-	ms *service.MessageService
+type Message struct {
+	ms *service.Message
 }
 
-func RegisterMessages(g *gin.RouterGroup) {
-	h := messageHandler{ms: service.NewMessageService()}
-	messages := g.Group("/messages")
-	messages.GET("", h.getMessages)
-	messages.GET("/:id", h.getMessage)
-	messages.POST("", h.createMessage)
-	messages.DELETE("/:id", middleware.ValidateJWT, h.deleteMessage)
-
+func NewMessage() *Message {
+	return &Message{ms: service.NewMessage()}
 }
 
-func (h messageHandler) getMessages(c *gin.Context) {
+func (h Message) GetMessages(c *gin.Context) {
 	m, err := h.ms.GetMessages(c.Request.Context())
 	if err != nil {
 		c.Error(err)
@@ -34,8 +28,12 @@ func (h messageHandler) getMessages(c *gin.Context) {
 	c.IndentedJSON(200, toDtos(m))
 }
 
-func (h messageHandler) getMessage(c *gin.Context) {
-	id := uuid.MustParse(c.Param("id"))
+func (h Message) GetMessageById(c *gin.Context) {
+	id, err := uuid.Parse(c.Param("id"))
+	if err != nil {
+		c.Error(errors.NewErrBadRequest("Missing id parameter"))
+		return
+	}
 	m, err := h.ms.GetMessage(c.Request.Context(), id)
 	if err != nil {
 		c.Error(err)
@@ -48,7 +46,7 @@ func (h messageHandler) getMessage(c *gin.Context) {
 	})
 }
 
-func (h messageHandler) createMessage(c *gin.Context) {
+func (h Message) CreateMessage(c *gin.Context) {
 	var m *dto.CreateMessage
 	c.Bind(&m)
 	if err := h.ms.CreateMessage(c.Request.Context(), toEntity(m)); err != nil {
@@ -58,8 +56,12 @@ func (h messageHandler) createMessage(c *gin.Context) {
 	c.Status(204)
 }
 
-func (h messageHandler) deleteMessage(c *gin.Context) {
-	id := uuid.MustParse(c.Param("id"))
+func (h Message) DeleteMessage(c *gin.Context) {
+	id, err := uuid.Parse(c.Param("id"))
+	if err != nil {
+		c.Error(errors.NewErrBadRequest("Missing id parameter"))
+		return
+	}
 	roles := auth.GetJWTRoles(c)
 	log.Ctx(c.Request.Context()).Info().Msgf("Authorized with role: %s", roles)
 	if err := h.ms.DeleteMessage(c.Request.Context(), id); err != nil {
@@ -78,9 +80,10 @@ func toEntity(m *dto.CreateMessage) *model.Message {
 
 func toDto(m *model.Message) *dto.Message {
 	return &dto.Message{
-		Id:   m.Id,
-		Code: m.Code,
-		Text: m.Text,
+		Id:      m.Id,
+		Code:    m.Code,
+		Text:    m.Text,
+		Version: int(m.Version.Int64),
 	}
 }
 

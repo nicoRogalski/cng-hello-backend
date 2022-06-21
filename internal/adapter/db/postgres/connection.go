@@ -11,6 +11,9 @@ import (
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 )
+const (
+	maxCon = 100
+)
 
 var (
 	DBConn *gorm.DB
@@ -37,7 +40,7 @@ func InitConnection() {
 	if err != nil {
 		panic("Could not connect to sql db")
 	}
-	maxCon := 100
+	
 	sqlDB.SetMaxOpenConns(maxCon)
 	sqlDB.SetMaxIdleConns(int(float64(maxCon) * 0.1))
 	sqlDB.SetConnMaxLifetime(time.Hour)
