@@ -1,11 +1,11 @@
-package log
+package middleware
 
 import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/rs/zerolog/log"
-	"go.opentelemetry.io/otel/trace"
+	"github.com/uptrace/opentelemetry-go-extra/otelzap"
+	"go.uber.org/zap"
 )
 
 type ginHands struct {
@@ -36,23 +36,17 @@ func Logger(s string) gin.HandlerFunc {
 		cData := ginHands{
 			SerName:    s,
 			Path:       path,
-			Latency:    time.Since(t),
+			Latency:    time.Duration(time.Since(t).Milliseconds()),
 			Method:     c.Request.Method,
 			StatusCode: c.Writer.Status(),
 			MsgStr:     msg,
 		}
 
-		li := log.Debug()
-		sc := trace.SpanFromContext(c.Request.Context()).SpanContext()
-		if sc.IsValid() {
-			li.Str("trace", sc.TraceID().String()).
-				Str("span", sc.SpanID().String())
-		}
-		li.Str("server", cData.SerName).
-			Str("method", cData.Method).
-			Str("path", cData.Path).
-			Dur("resp_time", cData.Latency).
-			Int("status", cData.StatusCode).
-			Msg(cData.MsgStr)
+		otelzap.Ctx(c.Request.Context()).Info(cData.MsgStr,
+			zap.String("method", cData.Method),
+			zap.String("path", cData.Path),
+			zap.Duration("resp_time", cData.Latency),
+			zap.Int("status", cData.StatusCode))
+
 	}
 }

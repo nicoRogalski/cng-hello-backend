@@ -3,7 +3,7 @@ package tracer
 import (
 	"context"
 
-	"github.com/rs/zerolog/log"
+	"github.com/uptrace/opentelemetry-go-extra/otelzap"
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/exporters/jaeger"
@@ -20,10 +20,10 @@ func Setup(endpoint string, serviceName string, enabled bool) {
 	}
 
 	exp, err := jaeger.New(jaeger.WithCollectorEndpoint(jaeger.WithEndpoint(endpoint)))
-
 	if err != nil {
-		log.Fatal().Err(err)
+		otelzap.Ctx(context.Background()).Warn("Jeager setup failed")
 	}
+
 	tp := sdktrace.NewTracerProvider(
 		sdktrace.WithSampler(sdktrace.AlwaysSample()),
 		sdktrace.WithBatcher(exp),

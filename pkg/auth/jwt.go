@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"github.com/MicahParks/keyfunc"
-	"github.com/rs/zerolog/log"
+	"github.com/uptrace/opentelemetry-go-extra/otelzap"
 )
 
 const (
@@ -16,12 +16,12 @@ var Jwks *keyfunc.JWKS
 
 func Setup(oauthJwtCertUrl string) {
 	if oauthJwtCertUrl == "" {
-		log.Warn().Msg("Server starts without OIDC Endpoint for secret")
+		otelzap.L().Warn("Server starts without OIDC Endpoint for secret")
 		return
 	}
 	options := keyfunc.Options{
 		RefreshErrorHandler: func(err error) {
-			log.Printf("There was an error with the jwt.Keyfunc\nError: %s", err.Error())
+			otelzap.L().Warn("There was an error with the jwt.Keyfunc")
 		},
 		RefreshInterval:   time.Hour,
 		RefreshRateLimit:  time.Minute * 5,
@@ -32,7 +32,7 @@ func Setup(oauthJwtCertUrl string) {
 	// Create the JWKS from the resource at the given URL.
 	j, err := keyfunc.Get(oauthJwtCertUrl, options)
 	if err != nil {
-		log.Warn().Msgf("Failed to create JWKS from resource at the given URL.\nError: %s", err.Error())
+		otelzap.L().Warn("Failed to create JWKS from resource")
 	}
 	Jwks = j
 }

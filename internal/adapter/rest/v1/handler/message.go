@@ -8,7 +8,7 @@ import (
 	"github.com/rogalni/cng-hello-backend/internal/service"
 	"github.com/rogalni/cng-hello-backend/pkg/errors"
 	"github.com/rogalni/cng-hello-backend/pkg/gin/auth"
-	"github.com/rogalni/cng-hello-backend/pkg/log"
+	"github.com/uptrace/opentelemetry-go-extra/otelzap"
 )
 
 type Message struct {
@@ -49,7 +49,8 @@ func (h Message) GetMessageById(c *gin.Context) {
 func (h Message) CreateMessage(c *gin.Context) {
 	var m *dto.CreateMessage
 	c.Bind(&m)
-	if err := h.ms.CreateMessage(c.Request.Context(), toEntity(m)); err != nil {
+	err := h.ms.CreateMessage(c.Request.Context(), toEntity(m))
+	if err != nil {
 		c.Error(err)
 		return
 	}
@@ -63,7 +64,7 @@ func (h Message) DeleteMessage(c *gin.Context) {
 		return
 	}
 	roles := auth.GetJWTRoles(c)
-	log.Ctx(c.Request.Context()).Info().Msgf("Authorized with role: %s", roles)
+	otelzap.Ctx(c.Request.Context()).Sugar().Infof("Authorized with role: %s", roles)
 	if err := h.ms.DeleteMessage(c.Request.Context(), id); err != nil {
 		c.Error(err)
 		return

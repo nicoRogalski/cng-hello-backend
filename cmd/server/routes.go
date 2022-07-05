@@ -7,13 +7,15 @@ import (
 	"github.com/rogalni/cng-hello-backend/internal/adapter/db/postgres"
 	"github.com/rogalni/cng-hello-backend/internal/adapter/rest/v1/handler"
 	"github.com/rogalni/cng-hello-backend/pkg/gin/health"
-	"github.com/rogalni/cng-hello-backend/pkg/gin/log"
 	"github.com/rogalni/cng-hello-backend/pkg/gin/metrics"
 	"github.com/rogalni/cng-hello-backend/pkg/gin/middleware"
 	"go.opentelemetry.io/contrib/instrumentation/github.com/gin-gonic/gin/otelgin"
 )
 
 func setupRoutes(r *gin.Engine) {
+	r.Use(gin.Recovery())
+	r.Use(middleware.ErrorHandler)
+	
 	health.For(r).
 		WithLiveness(serverStatus).
 		WithReadiness(serverStatus)
@@ -23,7 +25,7 @@ func setupRoutes(r *gin.Engine) {
 	api := r.Group("/api")
 	// Tracing and endpoint logging is attached to "/api" route
 	api.Use(otelgin.Middleware(config.App.ServiceName))
-	api.Use(log.Logger(config.App.ServiceName))
+	api.Use(middleware.Logger(config.App.ServiceName))
 	api.Use(gzip.Gzip(gzip.DefaultCompression))
 
 	// "v1" simulates a real world example of endpoints

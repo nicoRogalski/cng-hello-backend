@@ -1,7 +1,6 @@
 package config
 
 import (
-	"github.com/rs/zerolog/log"
 	"github.com/spf13/viper"
 )
 
@@ -42,14 +41,7 @@ func Setup() {
 	viper.SetConfigName("app")
 	viper.SetConfigType("env")
 
-	if err := viper.ReadInConfig(); err != nil {
-		if _, ok := err.(viper.ConfigFileNotFoundError); ok {
-			// Config file not found; ignore error if desired
-		} else {
-			log.Warn().Msg("Failed to load from config file")
-		}
-	}
-
+	viper.ReadInConfig()
 	viper.AutomaticEnv()
 
 	err := viper.Unmarshal(&App)
