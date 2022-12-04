@@ -1,0 +1,15 @@
+*.env
+*.md
+
+.git
+.gitignore
+.DS_Store
+
+.vscode/
+api/
+build/
+deployment/
+test/
+
+LICENSE
+VERSION

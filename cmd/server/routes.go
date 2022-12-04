@@ -3,7 +3,6 @@ package main
 import (
 	"github.com/gin-contrib/gzip"
 	"github.com/gin-gonic/gin"
-	"github.com/rogalni/cng-hello-backend/config"
 	"github.com/rogalni/cng-hello-backend/internal/adapter/db/postgres"
 	"github.com/rogalni/cng-hello-backend/internal/adapter/rest/v1/handler"
 	"github.com/rogalni/cng-hello-backend/pkg/gin/health"
@@ -24,8 +23,8 @@ func setupRoutes(r *gin.Engine) {
 
 	api := r.Group("/api")
 	// Tracing and endpoint logging is attached to "/api" route
-	api.Use(otelgin.Middleware(config.App.ServiceName))
-	api.Use(middleware.Logger(config.App.ServiceName))
+	api.Use(otelgin.Middleware(Config.ServiceName))
+	api.Use(middleware.Logger(Config.ServiceName))
 	api.Use(gzip.Gzip(gzip.DefaultCompression))
 
 	// "v1" simulates a real world example of endpoints

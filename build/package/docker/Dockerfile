@@ -1,28 +1,38 @@
-FROM golang:1.18-alpine AS builder
+ARG version
+
+FROM golang:1.19-alpine AS builder
 
 # Set necessary environmet variables needed for our image
 ENV GOOS=linux \
-    GOARCH=amd64 \
-    GOFLAGS=-buildvcs=false
+    GOARCH=amd64 
+    #GOFLAGS=-buildvcs=false
+
+# Add git or disable buildvcs flag
+RUN apk add --no-cache git
 
 WORKDIR /build
 
-COPY . .
+COPY go.mod go.sum ./
 RUN go mod download
-RUN go build -ldflags "-s -w" -o server ./cmd/server
 
-RUN apk add upx
-RUN upx --best --lzma /build/server
+COPY . .
+RUN go build -ldflags "-s -w" -o app ./cmd/server
 
-# Build a small image
-FROM alpine:3.16 AS final
+# Compress executable is optional and increases ressource usage
+#RUN apk add upx
+#RUN upx --best --lzma /build/app
 
-LABEL maintainer="nico.rogalski@msg-david.de"
-LABEL cng-hello-backend.project="CngHelloBackend"
-LABEL cng-hello-backend.version="1.0.0"
+# Build small secure image 
+FROM gcr.io/distroless/static-debian11
 
-COPY --from=builder /build/server /
+ARG version
+
+LABEL project.maintainer="nico.rogalski@gmsg-david.de"
+LABEL project.name="CngHelloBackend"
+LABEL project.version="${version}"
+
+COPY --from=builder /build/app /
 
 EXPOSE 8080
 USER 1000
-ENTRYPOINT ["/server"]
+ENTRYPOINT ["/app"]

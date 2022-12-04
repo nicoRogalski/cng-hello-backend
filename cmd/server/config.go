@@ -1,12 +1,14 @@
-package config
+package main
 
 import (
+	"fmt"
+
 	"github.com/spf13/viper"
 )
 
-var App Config
+var Config AppConfig
 
-type Config struct {
+type AppConfig struct {
 	ServiceName      string `mapstructure:"SERVICE_NAME"`
 	Port             string `mapstructure:"PORT"`
 	IsJsonLogging    bool   `mapstructure:"JSON_LOGGING"`
@@ -22,7 +24,7 @@ type Config struct {
 	JwkSetUri        string `mapstructure:"JWK_SET_URI"`
 }
 
-func Setup() {
+func SetupConfig() {
 	viper.SetDefault("SERVICE_NAME", "cng-hello-backend")
 	viper.SetDefault("PORT", "8080")
 	viper.SetDefault("JSON_LOGGING", true)
@@ -37,15 +39,20 @@ func Setup() {
 	viper.SetDefault("POSTGRES_DB", "")
 	viper.SetDefault("JWK_SET_URI", "")
 
-	viper.AddConfigPath("./config")
+	viper.AddConfigPath("./")
 	viper.SetConfigName("app")
 	viper.SetConfigType("env")
 
-	viper.ReadInConfig()
 	viper.AutomaticEnv()
+	viper.ReadInConfig()
 
-	err := viper.Unmarshal(&App)
+	err := viper.Unmarshal(&Config)
 	if err != nil {
-		panic("Could not unmarshal config")
+		fmt.Println("Could not unmarshal config")
 	}
+
+	if Config.IsDevMode {
+		fmt.Printf("%+v\n", Config)
+	}
+
 }

@@ -16,7 +16,7 @@
         {
             "label": "build image",
             "type": "shell",
-            "command": "docker build -f build/package/docker/Dockerfile -t cng-hello-backend .",
+            "command": "docker build -f build/package/docker/Dockerfile -t cng-hello-backend --build-arg version=$(cat VERSION) .",
             "problemMatcher": [],
             "group": {
                 "kind": "build",

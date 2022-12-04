@@ -8,3 +8,4 @@
 *.out
 
 config/app.env
+.DS_Store

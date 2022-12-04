@@ -25,17 +25,19 @@ func NewMessage() *Message {
 	return &Message{}
 }
 
-func (mr Message) FindAll(ctx context.Context) (m []*model.Message, err error) {
+func (mr Message) FindAll(ctx context.Context) ([]*model.Message, error) {
 	otelzap.Ctx(ctx).Debug("Get messages")
 	db := postgres.DBConn
-	err = db.WithContext(ctx).Find(&m).Error
-	return
+	var m []*model.Message
+	err := db.WithContext(ctx).Find(&m).Error
+	return m, err
 }
 
-func (mr Message) FindById(ctx context.Context, id uuid.UUID) (m *model.Message, err error) {
+func (mr Message) FindById(ctx context.Context, id uuid.UUID) (*model.Message, error) {
 	otelzap.Ctx(ctx).Debug("Get message")
 	db := postgres.DBConn
-	err = db.WithContext(ctx).Where("id = ?", id).First(&m).Error
+	var m *model.Message
+	err := db.WithContext(ctx).Where("id = ?", id).First(&m).Error
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			err = perrors.NewErrorNotFound("Message not found")
@@ -44,7 +46,7 @@ func (mr Message) FindById(ctx context.Context, id uuid.UUID) (m *model.Message,
 			err = perrors.NewErrInternalServer("Internal Server Error")
 		}
 	}
-	return
+	return m, err
 }
 
 func (mr Message) Create(ctx context.Context, m *model.Message) error {
