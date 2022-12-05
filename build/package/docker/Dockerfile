@@ -1,14 +1,16 @@
-ARG version
+FROM golang:1.19 AS builder
 
-FROM golang:1.19-alpine AS builder
+# Used args for multi arch builds
+ARG TARGETOS=linux
+ARG TARGETARCH=amd64
 
 # Set necessary environmet variables needed for our image
-ENV GOOS=linux \
-    GOARCH=amd64 
+ENV GOOS=${TARGETOS} \
+    GOARCH=${TARGETARCH}
     #GOFLAGS=-buildvcs=false
 
-# Add git or disable buildvcs flag
-RUN apk add --no-cache git
+# Add git or disable buildvcs flag in alpine builder image
+#RUN apk add --no-cache git
 
 WORKDIR /build
 
@@ -23,7 +25,7 @@ RUN go build -ldflags "-s -w" -o app ./cmd/server
 #RUN upx --best --lzma /build/app
 
 # Build small secure image 
-FROM gcr.io/distroless/static-debian11
+FROM alpine
 
 ARG version
 
@@ -35,4 +37,5 @@ COPY --from=builder /build/app /
 
 EXPOSE 8080
 USER 1000
+
 ENTRYPOINT ["/app"]

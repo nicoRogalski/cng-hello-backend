@@ -24,8 +24,8 @@ func setup() {
 	SetupConfig()
 	logger.Setup(Config.ServiceName, Config.IsDevMode)
 	tracer.Setup(Config.JaegerEndpoint, Config.ServiceName, Config.IsTracingEnabled)
-	go auth.Setup(Config.JwkSetUri)
-	go postgres.InitConnection(Config.PostgresHost, Config.PostgresUser, Config.PostresPassword, Config.PostgresDb, Config.PostgresPort)
+	auth.Setup(Config.JwkSetUri)
+	postgres.InitConnection(Config.PostgresHost, Config.PostgresUser, Config.PostresPassword, Config.PostgresDb, Config.PostgresPort)
 }
 
 func run() error {

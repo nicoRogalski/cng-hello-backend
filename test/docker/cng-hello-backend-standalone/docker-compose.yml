@@ -1,4 +1,9 @@
 # For demo purposes
+version: "3.9"
+
+networks:
+  com:
+
 services:
   cng-hello-backend:
     image: cng-hello-backend:latest
@@ -13,6 +18,8 @@ services:
       POSTGRES_PASSWORD: "password"
       POSTGRES_DB: "cngdb"
       JAEGER_ENDPOINT: "http://jaeger:14268/api/traces"
+    networks:
+      - com
     depends_on:
       - prometheus
       - jaeger
@@ -27,6 +34,8 @@ services:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
       POSTGRES_DB: cngdb
+    networks:
+      - com
 
   prometheus:
     image: prom/prometheus:v2.25.2
@@ -47,6 +56,8 @@ services:
     ports:
       - "16686:16686"
       - "14268:14268"
+    networks:
+      - com
 
 volumes:
   grafana-data:

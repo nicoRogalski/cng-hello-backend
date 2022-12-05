@@ -14,9 +14,9 @@ const (
 
 var Jwks *keyfunc.JWKS
 
-func Setup(oauthJwtCertUrl string) {
-	if oauthJwtCertUrl == "" {
-		otelzap.L().Warn("Server starts without OIDC Endpoint for secret")
+func Setup(jwkSetUri string) {
+	if jwkSetUri == "" {
+		otelzap.L().Warn("Server starts without JwkSetUri for secret")
 		return
 	}
 	options := keyfunc.Options{
@@ -30,7 +30,7 @@ func Setup(oauthJwtCertUrl string) {
 	}
 
 	// Create the JWKS from the resource at the given URL.
-	j, err := keyfunc.Get(oauthJwtCertUrl, options)
+	j, err := keyfunc.Get(jwkSetUri, options)
 	if err != nil {
 		otelzap.L().Warn("Failed to create JWKS from resource")
 	}

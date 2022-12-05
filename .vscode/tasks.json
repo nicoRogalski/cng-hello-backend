@@ -6,11 +6,11 @@
         {
             "label": "run local",
             "type": "shell",
-            "command": "go run cmd/app.go",
+            "command": "go run ./cmd/server/",
             "problemMatcher": [],
             "group": {
                 "kind": "build",
-                "isDefault": true
+                "isDefault": false
             }
         },
         {
