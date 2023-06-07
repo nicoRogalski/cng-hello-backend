@@ -30,8 +30,10 @@ func main() {
 	shutdown := otel.Setup(ctx, cfg)
 	defer shutdown(ctx)
 
-	go auth.Setup(cfg.JwkSetUri)
+	auth.Setup(cfg.JwkSetUri)
+	
 	gdb := postgres.InitConnection(cfg.PostgresHost, cfg.PostgresUser, cfg.PostresPassword, cfg.PostgresDb, cfg.PostgresPort)
+	
 
 	server := NewServer(cfg, gdb)
 	server.Run()

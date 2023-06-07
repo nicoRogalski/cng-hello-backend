@@ -6,24 +6,21 @@ Showcase of a cloud native application in Go.
 
 ### Local
 ```
-go run .\cmd\server
+go run .\cmd\cng-hello-backend
 ```
 
 ### Local with database
 ```
-cd test/docker/cng-hello-backend-ressources
-docker-compose up
-cd ../../../
-go run .\cmd\server
+docker compose -f deployment/docker/cng-hello-backend-ressources/docker-compose.yml up --detach
+
+go run .\cmd\cng-hello-backend
 ```
 
 ### docker-compose
 ```
-docker build -f build/package/docker/Dockerfile -t cng-hello-backend .
+docker build -f ./build/package/docker/Dockerfile -t cng-hello-backend --build-arg version=$$(cat VERSION) .
 
-cd test/docker/cng-hello-backend-standalone
-
-docker-compose up
+docker compose -f deployment/docker/cng-hello-backend-standalone/docker-compose.yml up --detach
 ```
 
 #
@@ -31,6 +28,9 @@ docker-compose up
 ## 2. Thougths on the project
 - Is Go ready to be used in the cloud enterprise environment ?
 - Can Go detach big ship backends like java ?
+
+### 07.06.2023
+- Using otel for logs/traces/metrics with existing contrib instrumentation makes life a lot easier.  
 
 ### 20.02.2022
 - Some general packages for tracing, logging, and auth with a clean api needs to be implemented in order to not always do everything from scratch
@@ -59,7 +59,7 @@ docker-compose up
 - Apply groups from jwt in the context
 
 ### Metrics
-- Monitoring endpoint for prometheus (https://github.com/prometheus/client_golang)
+- Telemtry done via otel
 - Grafana
 - Tracing for jeager (https://github.com/open-telemetry/opentelemetry-go/tree/main/exporters/jaeger)
 - Tracing of gin (https://github.com/open-telemetry/opentelemetry-go-contrib/tree/main/instrumentation/github.com/gin-gonic/gin/otelgin)
@@ -70,23 +70,3 @@ docker-compose up
 
 ### Error handling
 - Added general error handling and middleware for gin.
-
-### Testing
-- Added example testing
-# 
-
-## 4. In progress:
-
-#
-
-## 5. To be done:
-
-### Rest
-- Add api as generated from openapi.yml
-
-#
-
-## 7. Future concepts
-https://github.com/open-telemetry/opentelemetry-go
-- Will  provide logging and metrics out of the box in the future
-

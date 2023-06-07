@@ -1,7 +1,7 @@
 
-dfp := ./build/package/dockerDockerfile
+dfp := build/package/dockerDockerfile
 rcfp := deployment/docker/cng-hello-backend-resources/docker-compose.yml
-scfp :=deployment/docker/cng-hello-backend-standalone/docker-compose.yml
+scfp := deployment/docker/cng-hello-backend-standalone/docker-compose.yml
 
 app:
 	@go build -o bin/app ./

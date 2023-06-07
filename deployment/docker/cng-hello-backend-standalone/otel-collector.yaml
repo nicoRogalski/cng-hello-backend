@@ -24,9 +24,9 @@ exporters:
   #   tls:
   #     insecure: true
   prometheus:
-    endpoint: otel_collector:9464
+    endpoint: "0.0.0.0:8889"
   # azuremonitor:
-  #   instrumentation_key: 95c2e742-92c5-47b4-9aff-2589d8592314
+  #   instrumentation_key: 
 
 
 service:

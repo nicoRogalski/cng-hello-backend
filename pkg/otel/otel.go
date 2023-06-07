@@ -85,7 +85,7 @@ func Setup(ctx context.Context, cfg *config.Config) func(context.Context) error 
 }
 
 func otelGrpcCon(ctx context.Context) *grpc.ClientConn {
-	con, err := grpc.DialContext(ctx, "otel_collector:4317",
+	con, err := grpc.DialContext(ctx, "otel-collector:4317",
 		grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		log.Fatal(err)
