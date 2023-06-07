@@ -12,7 +12,6 @@ type Config struct {
 	IsTracingEnabled bool   `mapstructure:"TRACING_ENABLED"`
 	IsMetricsEnabled bool   `mapstructure:"METRICS_ENABLED"`
 	IsDevMode        bool   `mapstructure:"DEV_MODE"`
-	JaegerEndpoint   string `mapstructure:"JAEGER_ENDPOINT"`
 	PostgresHost     string `mapstructure:"POSTGRES_HOST"`
 	PostgresPort     string `mapstructure:"POSTGRES_PORT"`
 	PostgresUser     string `mapstructure:"POSTGRES_USER"`
@@ -29,7 +28,6 @@ func Load() *Config {
 	viper.SetDefault("TRACING_ENABLED", true)
 	viper.SetDefault("METRICS_ENABLED", true)
 	viper.SetDefault("DEV_MODE", false)
-	viper.SetDefault("JAEGER_ENDPOINT", "")
 	viper.SetDefault("POSTGRES_HOST", "")
 	viper.SetDefault("POSTGRES_PORT", "5432")
 	viper.SetDefault("POSTGRES_USER", "")
