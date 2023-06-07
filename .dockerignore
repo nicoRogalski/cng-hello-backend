@@ -1,0 +1,17 @@
+*.env
+*.md
+*_test.go
+
+.git
+.gitignore
+.DS_Store
+
+.vscode/
+api/
+bin/
+build/
+deployment/
+
+LICENSE
+Makefile
+VERSION

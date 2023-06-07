@@ -1,5 +1,10 @@
-# For demo purposes
+version: "3.9"
+
+networks:
+  com:
+
 services:
+
   cng-hello-backend:
     image: cng-hello-backend:latest
     ports:
@@ -12,7 +17,9 @@ services:
       POSTGRES_USER: "user"
       POSTGRES_PASSWORD: "password"
       POSTGRES_DB: "cngdb"
-      JAEGER_ENDPOINT: "http://jaeger:14268/api/traces"
+      LOG_LEVEL: "DEBUG"
+    networks:
+      - com
     depends_on:
       - prometheus
       - jaeger
@@ -27,11 +34,15 @@ services:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
       POSTGRES_DB: cngdb
+    networks:
+      - com
 
   prometheus:
-    image: prom/prometheus:v2.25.2
+    image: prom/prometheus:latest
     ports:
       - "9090:9090"
+    networks:
+      - com
     volumes:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
 
@@ -39,14 +50,35 @@ services:
     image: grafana/grafana:latest
     ports:
       - 3000:3000
+    networks:
+      - com
     volumes:
       - grafana-data:/var/lib/grafana
 
   jaeger:
-    image: jaegertracing/all-in-one:1.22.0
+    image: jaegertracing/all-in-one:latest
     ports:
-      - "16686:16686"
-      - "14268:14268"
+      - "14250:14250" # Collector gRPC
+      - "16686:16686" # Web HTTP
+    networks:
+      - com
+  
+  otel_collector:
+    image: otel/opentelemetry-collector-contrib:latest
+    restart: on-failure
+    user: '0:0' # required for logs
+    volumes:
+      - ./otel-collector.yaml:/etc/otelcol-contrib/config.yaml
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - /var/log:/var/log:ro
+    ports:
+        - "4317:4317" # OTLP over gRPC receiver
+        - "9464:9464" # Prometheus exporter
+    depends_on:
+        - jaeger
+        - prometheus
+    networks:
+      - com
 
 volumes:
   grafana-data:

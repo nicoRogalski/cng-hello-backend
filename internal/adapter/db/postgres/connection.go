@@ -4,13 +4,13 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/rogalni/cng-hello-backend/config"
 	"github.com/rogalni/cng-hello-backend/internal/adapter/db/postgres/model"
 	"github.com/uptrace/opentelemetry-go-extra/otelgorm"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 )
+
 const (
 	maxCon = 100
 )
@@ -19,9 +19,9 @@ var (
 	DBConn *gorm.DB
 )
 
-func InitConnection() {
+func InitConnection(host string, user string, password string, dbName string, port string) *gorm.DB {
 	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable",
-		config.App.PostgresHost, config.App.PostgresUser, config.App.PostresPassword, config.App.PostgresDb, config.App.PostgresPort)
+		host, user, password, dbName, port)
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{
 		PrepareStmt:     true,
 		QueryFields:     true,
@@ -40,7 +40,7 @@ func InitConnection() {
 	if err != nil {
 		panic("Could not connect to sql db")
 	}
-	
+
 	sqlDB.SetMaxOpenConns(maxCon)
 	sqlDB.SetMaxIdleConns(int(float64(maxCon) * 0.1))
 	sqlDB.SetConnMaxLifetime(time.Hour)
@@ -49,7 +49,7 @@ func InitConnection() {
 	// if err := sqlDB.Ping(); err != nil {
 	// 	panic(err)
 	// }
-	DBConn = db
 
 	db.AutoMigrate(&model.Message{})
+	return db
 }

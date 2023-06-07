@@ -1,4 +1,6 @@
-FROM golang:1.18-alpine AS builder
+ARG version
+
+FROM golang:1.20-alpine AS builder
 
 # Set necessary environmet variables needed for our image
 ENV GOOS=linux \
@@ -7,22 +9,26 @@ ENV GOOS=linux \
 
 WORKDIR /build
 
-COPY . .
+COPY go.mod go.sum ./
 RUN go mod download
-RUN go build -ldflags "-s -w" -o server ./cmd/server
 
-RUN apk add upx
-RUN upx --best --lzma /build/server
+COPY . .
+RUN go build -ldflags "-s -w" -o cng-hello-backend ./cmd/cng-hello-backend
+
+# RUN apk add upx
+# RUN upx --best --lzma /build/cng-hello-backend
 
 # Build a small image
-FROM alpine:3.16 AS final
+FROM gcr.io/distroless/base AS final
+
+ARG version
 
 LABEL maintainer="nico.rogalski@msg-david.de"
 LABEL cng-hello-backend.project="CngHelloBackend"
-LABEL cng-hello-backend.version="1.0.0"
+LABEL cng-hello-backend.version="${version}"
 
-COPY --from=builder /build/server /
+COPY --from=builder /build/cng-hello-backend /
 
 EXPOSE 8080
-USER 1000
-ENTRYPOINT ["/server"]
+
+ENTRYPOINT ["/cng-hello-backend"]

@@ -19,12 +19,12 @@ type MRMock struct {
 	mock.Mock
 }
 
-func (mr MRMock) FindAll(ctx context.Context) ([]*model.Message, error) {
+func (mr *MRMock) FindAll(ctx context.Context) ([]*model.Message, error) {
 	return []*model.Message{}, nil
 
 }
 
-func (mr MRMock) FindById(ctx context.Context, id uuid.UUID) (*model.Message, error) {
+func (mr *MRMock) FindById(ctx context.Context, id uuid.UUID) (*model.Message, error) {
 	if id == mockId {
 		return &model.Message{Id: id, Code: "code", Text: "text"}, nil
 	} else {
@@ -33,15 +33,15 @@ func (mr MRMock) FindById(ctx context.Context, id uuid.UUID) (*model.Message, er
 
 }
 
-func (mr MRMock) Create(ctx context.Context, m *model.Message) error {
+func (mr *MRMock) Create(ctx context.Context, m *model.Message) error {
 	return nil
 }
-func (mr MRMock) Delete(ctx context.Context, id uuid.UUID) error {
+func (mr *MRMock) Delete(ctx context.Context, id uuid.UUID) error {
 	return nil
 }
 
 func TestMessageService_GetMessage(t *testing.T) {
-	mms := Message{
+	mms := MessageService{
 		messageRepository: &MRMock{},
 	}
 
@@ -51,7 +51,7 @@ func TestMessageService_GetMessage(t *testing.T) {
 	}
 	tests := []struct {
 		name    string
-		ms      Message
+		ms      MessageService
 		args    args
 		want    *model.Message
 		wantErr bool

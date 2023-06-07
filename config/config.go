@@ -4,14 +4,13 @@ import (
 	"github.com/spf13/viper"
 )
 
-var App Config
-
 type Config struct {
 	ServiceName      string `mapstructure:"SERVICE_NAME"`
 	Port             string `mapstructure:"PORT"`
 	IsJsonLogging    bool   `mapstructure:"JSON_LOGGING"`
-	IsLogLevelDebug  bool   `mapstructure:"LOG_LEVEL_DEBUG"`
+	LogLevel         string `mapstructure:"LOG_LEVEL"`
 	IsTracingEnabled bool   `mapstructure:"TRACING_ENABLED"`
+	IsMetricsEnabled bool   `mapstructure:"METRICS_ENABLED"`
 	IsDevMode        bool   `mapstructure:"DEV_MODE"`
 	JaegerEndpoint   string `mapstructure:"JAEGER_ENDPOINT"`
 	PostgresHost     string `mapstructure:"POSTGRES_HOST"`
@@ -22,12 +21,13 @@ type Config struct {
 	JwkSetUri        string `mapstructure:"JWK_SET_URI"`
 }
 
-func Setup() {
+func Load() *Config {
 	viper.SetDefault("SERVICE_NAME", "cng-hello-backend")
 	viper.SetDefault("PORT", "8080")
 	viper.SetDefault("JSON_LOGGING", true)
-	viper.SetDefault("LOG_LEVEL_DEBUG", false)
+	viper.SetDefault("LOG_LEVEL", "INFO")
 	viper.SetDefault("TRACING_ENABLED", true)
+	viper.SetDefault("METRICS_ENABLED", true)
 	viper.SetDefault("DEV_MODE", false)
 	viper.SetDefault("JAEGER_ENDPOINT", "")
 	viper.SetDefault("POSTGRES_HOST", "")
@@ -44,8 +44,10 @@ func Setup() {
 	viper.ReadInConfig()
 	viper.AutomaticEnv()
 
-	err := viper.Unmarshal(&App)
+	cfg := new(Config)
+	err := viper.Unmarshal(cfg)
 	if err != nil {
 		panic("Could not unmarshal config")
 	}
+	return cfg
 }

@@ -9,17 +9,18 @@ import (
 	"github.com/rogalni/cng-hello-backend/pkg/errors"
 	"github.com/rogalni/cng-hello-backend/pkg/gin/auth"
 	"github.com/uptrace/opentelemetry-go-extra/otelzap"
+	"gorm.io/gorm"
 )
 
-type Message struct {
-	ms *service.Message
+type MessageHandler struct {
+	ms *service.MessageService
 }
 
-func NewMessage() *Message {
-	return &Message{ms: service.NewMessage()}
+func NewMessageHandler(db *gorm.DB) *MessageHandler {
+	return &MessageHandler{ms: service.NewMessagService(db)}
 }
 
-func (h Message) GetMessages(c *gin.Context) {
+func (h *MessageHandler) GetMessages(c *gin.Context) {
 	m, err := h.ms.GetMessages(c.Request.Context())
 	if err != nil {
 		c.Error(err)
@@ -28,7 +29,7 @@ func (h Message) GetMessages(c *gin.Context) {
 	c.IndentedJSON(200, toDtos(m))
 }
 
-func (h Message) GetMessageById(c *gin.Context) {
+func (h *MessageHandler) GetMessageById(c *gin.Context) {
 	id, err := uuid.Parse(c.Param("id"))
 	if err != nil {
 		c.Error(errors.NewErrBadRequest("Missing id parameter"))
@@ -46,7 +47,7 @@ func (h Message) GetMessageById(c *gin.Context) {
 	})
 }
 
-func (h Message) CreateMessage(c *gin.Context) {
+func (h *MessageHandler) CreateMessage(c *gin.Context) {
 	var m *dto.CreateMessage
 	c.Bind(&m)
 	err := h.ms.CreateMessage(c.Request.Context(), toEntity(m))
@@ -57,7 +58,7 @@ func (h Message) CreateMessage(c *gin.Context) {
 	c.Status(204)
 }
 
-func (h Message) DeleteMessage(c *gin.Context) {
+func (h *MessageHandler) DeleteMessage(c *gin.Context) {
 	id, err := uuid.Parse(c.Param("id"))
 	if err != nil {
 		c.Error(errors.NewErrBadRequest("Missing id parameter"))
