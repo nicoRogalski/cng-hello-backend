@@ -10,21 +10,20 @@ func ErrorHandler(ctx *gin.Context) {
 	e := ctx.Errors
 	if e != nil {
 		handle(ctx, ctx.Errors.Last())
-		ctx.Request.Context().Done()
 	}
 }
 
 func handle(c *gin.Context, err error) {
 	switch err := err.(type) {
 	case errors.ErrNotFound:
-		c.IndentedJSON(err.Code, err)
+		c.AbortWithStatusJSON(err.Code, err)
 		return
 	case errors.ErrInternalServer:
-		c.IndentedJSON(err.Code, err)
+		c.AbortWithStatusJSON(err.Code, err)
 		return
 	default:
 		e := errors.ErrInternalServer{Code: 500, Message: "Internal server error"}
-		c.IndentedJSON(e.Code, e)
+		c.AbortWithStatusJSON(e.Code, e)
 		return
 	}
 }

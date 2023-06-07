@@ -6,17 +6,17 @@
         {
             "label": "run local",
             "type": "shell",
-            "command": "go run cmd/app.go",
+            "command": "go run ./cmd/server/",
             "problemMatcher": [],
             "group": {
                 "kind": "build",
-                "isDefault": true
+                "isDefault": false
             }
         },
         {
             "label": "build image",
             "type": "shell",
-            "command": "docker build -f build/package/docker/Dockerfile -t cng-hello-backend .",
+            "command": "docker build -f build/package/docker/Dockerfile -t cng-hello-backend --build-arg version=$(cat VERSION) .",
             "problemMatcher": [],
             "group": {
                 "kind": "build",

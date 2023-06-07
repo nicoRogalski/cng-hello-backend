@@ -79,6 +79,3 @@ services:
         - prometheus
     networks:
       - com
-
-volumes:
-  grafana-data:

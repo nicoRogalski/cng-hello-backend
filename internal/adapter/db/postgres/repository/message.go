@@ -45,7 +45,7 @@ func (mr *MessageRepository) FindById(ctx context.Context, id uuid.UUID) (m *mod
 			err = perrors.NewErrInternalServer("Internal Server Error")
 		}
 	}
-	return
+	return m, err
 }
 
 func (mr *MessageRepository) Create(ctx context.Context, m *model.Message) error {

@@ -2,6 +2,7 @@ package postgres
 
 import (
 	"fmt"
+	"log"
 	"time"
 
 	"github.com/rogalni/cng-hello-backend/internal/adapter/db/postgres/model"
@@ -10,6 +11,7 @@ import (
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 )
+
 
 const (
 	maxCon = 100
@@ -29,17 +31,18 @@ func InitConnection(host string, user string, password string, dbName string, po
 		Logger:          logger.Default.LogMode(logger.Silent),
 	})
 	if err != nil {
-		panic("Could not connect to db")
+		log.Fatalf("Could not connect to db: %v\n", err)
 	}
 
 	if err := db.Use(otelgorm.NewPlugin()); err != nil {
-		panic(err)
+		log.Fatalf("Could not use plugin otelgorm: %v\n", err)
 	}
 
 	sqlDB, err := db.DB()
 	if err != nil {
-		panic("Could not connect to sql db")
+		log.Fatalf("Could not connect to sql db: %v", err)
 	}
+
 
 	sqlDB.SetMaxOpenConns(maxCon)
 	sqlDB.SetMaxIdleConns(int(float64(maxCon) * 0.1))
