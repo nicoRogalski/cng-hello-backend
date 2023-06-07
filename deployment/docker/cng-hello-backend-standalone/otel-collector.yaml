@@ -4,7 +4,7 @@ receivers:
   otlp:
     protocols:
       grpc:
-        endpoint: 0.0.0.0:4317 # It is important that we do not use localhost
+        endpoint: 0.0.0.0:4317
 
 processors:
   memory_limiter:
@@ -15,19 +15,12 @@ processors:
     send_batch_size: 8192
 
 exporters:
-  jaeger:
-    endpoint: jaeger:14250
+  otlp/jaeger:
+    endpoint: jaeger:4317
     tls:
       insecure: true
-  # otlp/jaeger:
-  #   endpoint: jaeger:14250
-  #   tls:
-  #     insecure: true
   prometheus:
     endpoint: "0.0.0.0:8889"
-  # azuremonitor:
-  #   instrumentation_key: 
-
 
 service:
   # A pipeline consists of a set of receivers, processors and exporters.
@@ -35,7 +28,7 @@ service:
     traces:
       receivers: [otlp]
       processors: [batch]
-      exporters: [jaeger]
+      exporters: [otlp/jaeger]
     metrics:
       receivers: [otlp]
       processors: [batch]
