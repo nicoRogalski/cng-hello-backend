@@ -27,13 +27,12 @@ func main() {
 	ctx := context.Background()
 	cfg := config.Load()
 
-	shutdown := otel.Setup(ctx, cfg)
-	defer shutdown(ctx)
+	cleanup := otel.Setup(ctx, cfg)
+	defer cleanup(ctx)
 
 	auth.Setup(cfg.JwkSetUri)
-	
+
 	gdb := postgres.InitConnection(cfg.PostgresHost, cfg.PostgresUser, cfg.PostresPassword, cfg.PostgresDb, cfg.PostgresPort)
-	
 
 	server := NewServer(cfg, gdb)
 	server.Run()

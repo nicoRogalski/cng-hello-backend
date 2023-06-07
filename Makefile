@@ -1,5 +1,5 @@
 
-dfp := build/package/dockerDockerfile
+dfp := build/package/docker/Dockerfile
 rcfp := deployment/docker/cng-hello-backend-resources/docker-compose.yml
 scfp := deployment/docker/cng-hello-backend-standalone/docker-compose.yml
 

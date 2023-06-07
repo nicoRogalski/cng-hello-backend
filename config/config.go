@@ -5,19 +5,20 @@ import (
 )
 
 type Config struct {
-	ServiceName      string `mapstructure:"SERVICE_NAME"`
-	Port             string `mapstructure:"PORT"`
-	IsJsonLogging    bool   `mapstructure:"JSON_LOGGING"`
-	LogLevel         string `mapstructure:"LOG_LEVEL"`
-	IsTracingEnabled bool   `mapstructure:"TRACING_ENABLED"`
-	IsMetricsEnabled bool   `mapstructure:"METRICS_ENABLED"`
-	IsDevMode        bool   `mapstructure:"DEV_MODE"`
-	PostgresHost     string `mapstructure:"POSTGRES_HOST"`
-	PostgresPort     string `mapstructure:"POSTGRES_PORT"`
-	PostgresUser     string `mapstructure:"POSTGRES_USER"`
-	PostresPassword  string `mapstructure:"POSTGRES_PASSWORD"`
-	PostgresDb       string `mapstructure:"POSTGRES_DB"`
-	JwkSetUri        string `mapstructure:"JWK_SET_URI"`
+	ServiceName           string `mapstructure:"SERVICE_NAME"`
+	Port                  string `mapstructure:"PORT"`
+	IsJsonLogging         bool   `mapstructure:"JSON_LOGGING"`
+	LogLevel              string `mapstructure:"LOG_LEVEL"`
+	IsTracingEnabled      bool   `mapstructure:"TRACING_ENABLED"`
+	IsMetricsEnabled      bool   `mapstructure:"METRICS_ENABLED"`
+	IsDevMode             bool   `mapstructure:"DEV_MODE"`
+	PostgresHost          string `mapstructure:"POSTGRES_HOST"`
+	PostgresPort          string `mapstructure:"POSTGRES_PORT"`
+	PostgresUser          string `mapstructure:"POSTGRES_USER"`
+	PostresPassword       string `mapstructure:"POSTGRES_PASSWORD"`
+	PostgresDb            string `mapstructure:"POSTGRES_DB"`
+	JwkSetUri             string `mapstructure:"JWK_SET_URI"`
+	OtelCollectorEndpoint string `mapstructure:"OTEL_COLLECTOR_ENDPOINT"`
 }
 
 func Load() *Config {
@@ -34,6 +35,7 @@ func Load() *Config {
 	viper.SetDefault("POSTGRES_PASSWORD", "")
 	viper.SetDefault("POSTGRES_DB", "")
 	viper.SetDefault("JWK_SET_URI", "")
+	viper.SetDefault("OTEL_COLLECTOR_ENDPOINT", "localhost:4317")
 
 	viper.AddConfigPath("./config")
 	viper.SetConfigName("app")

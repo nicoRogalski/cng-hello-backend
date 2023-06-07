@@ -17,6 +17,7 @@ services:
       POSTGRES_PASSWORD: "password"
       POSTGRES_DB: "cngdb"
       LOG_LEVEL: "DEBUG"
+      OTEL_COLLECTOR_ENDPOINT: "otel-collector:4317"
     networks:
       - web
       - internal

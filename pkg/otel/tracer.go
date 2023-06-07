@@ -11,12 +11,8 @@ import (
 	"google.golang.org/grpc"
 )
 
-func setupTracing(ctx context.Context, serviceName string, con *grpc.ClientConn, resource *resource.Resource) (*trace.TracerProvider, error) {
-	exporter, err := otlptracegrpc.New(
-		ctx,
-		otlptracegrpc.WithGRPCConn(con),
-		otlptracegrpc.WithInsecure(),
-	)
+func setupTracing(ctx context.Context, con *grpc.ClientConn, resource *resource.Resource) (*trace.TracerProvider, error) {
+	exporter, err := otlptracegrpc.New(ctx, otlptracegrpc.WithGRPCConn(con))
 	if err != nil {
 		return nil, err
 	}
