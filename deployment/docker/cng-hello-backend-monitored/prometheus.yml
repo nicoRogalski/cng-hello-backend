@@ -1,3 +1,4 @@
+# Doc: https://prometheus.io/docs/prometheus/latest/configuration/configuration/
 global:
   scrape_interval:     10s
   evaluation_interval: 10s

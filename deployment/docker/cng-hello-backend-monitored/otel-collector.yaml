@@ -1,3 +1,4 @@
+# Doc: https://opentelemetry.io/docs/collector/configuration/
 extensions:
 
 receivers:
@@ -15,10 +16,6 @@ processors:
     send_batch_size: 8192
 
 exporters:
-  otlp/jaeger:
-    endpoint: jaeger:4317
-    tls:
-      insecure: true
   otlp/tempo:
     endpoint: tempo:4317
     tls:
@@ -32,7 +29,7 @@ service:
     traces:
       receivers: [otlp]
       processors: [batch]
-      exporters: [otlp/tempo, otlp/jaeger]
+      exporters: [otlp/tempo]
     metrics:
       receivers: [otlp]
       processors: [batch]

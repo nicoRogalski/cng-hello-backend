@@ -42,7 +42,7 @@ func Logger(s string) gin.HandlerFunc {
 			MsgStr:     msg,
 		}
 
-		otelzap.Ctx(c.Request.Context()).Info(cData.MsgStr,
+		otelzap.Ctx(c.Request.Context()).Debug(cData.MsgStr,
 			zap.String("method", cData.Method),
 			zap.String("path", cData.Path),
 			zap.Duration("resp_time", cData.Latency),
