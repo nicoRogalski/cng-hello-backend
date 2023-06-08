@@ -38,36 +38,7 @@ services:
     networks:
       - internal
 
-  prometheus:
-    image: prom/prometheus:latest
-    ports:
-      - "9090:9090"
-    volumes:
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml
-    networks:
-      - web
-      - internal
-
-  grafana:
-    image: grafana/grafana:latest
-    ports:
-      - 3000:3000
-    volumes:
-      - grafana-data:/var/lib/grafana
-      - ./grafana/provisioning/:/etc/grafana/provisioning/
-    networks:
-      - web
-      - internal
-
-  jaeger:
-    image: jaegertracing/all-in-one:latest
-    ports:
-      - "16686:16686" # Web UI
-      - "43170:4317" # OTLP GRPC
-    networks:
-      - web
-      - internal
-  
+# MONITORING
   otel-collector:
     image: otel/opentelemetry-collector:latest
     command: [ "--config=/etc/otel-collector.yaml" ]
@@ -80,8 +51,53 @@ services:
     networks:
       - internal
     depends_on:
-        - jaeger
-        - prometheus
+      - jaeger
+      - prometheus
+      - tempo
+
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    networks:
+      - web
+      - internal
+
+  grafana:
+    image: grafana/grafana:9.5.3
+    ports:
+      - 3000:3000
+    environment:
+      - GF_FEATURE_TOGGLES_ENABLE=traceqlEditor
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ./grafana/provisioning/:/etc/grafana/provisioning/
+    networks:
+      - web
+      - internal
+
+  jaeger:
+    image: jaegertracing/all-in-one:latest
+    ports:
+      - "16686:16686" # Web UI
+      - "4317" # OTLP GRPC
+    networks:
+      - web
+      - internal
+
+  tempo:
+    image: grafana/tempo:latest
+    command: [ "-config.file=/etc/tempo.yaml" ]
+    volumes:
+      - ./tempo.yaml:/etc/tempo.yaml
+     # - ./tempo-data:/tmp/tempo
+    ports:
+      - "3200"   # tempo
+      - "4317"  # otlp grpc
+    networks:
+      - internal 
 
 volumes:
   grafana-data:
