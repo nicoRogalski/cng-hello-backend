@@ -3,12 +3,6 @@ package main
 import (
 	"context"
 	"fmt"
-	"net/http"
-	"os"
-	"os/signal"
-	"syscall"
-	"time"
-
 	"github.com/gin-contrib/gzip"
 	"github.com/gin-gonic/gin"
 	"github.com/rogalni/cng-hello-backend/config"
@@ -17,17 +11,30 @@ import (
 	"github.com/rogalni/cng-hello-backend/pkg/auth"
 	"github.com/rogalni/cng-hello-backend/pkg/gin/health"
 	"github.com/rogalni/cng-hello-backend/pkg/gin/middleware"
-	"github.com/rogalni/cng-hello-backend/pkg/otel"
+	"github.com/rogalni/goteli"
 	"github.com/uptrace/opentelemetry-go-extra/otelzap"
 	"go.opentelemetry.io/contrib/instrumentation/github.com/gin-gonic/gin/otelgin"
 	"gorm.io/gorm"
+	"net/http"
+	"os"
+	"os/signal"
+	"syscall"
+	"time"
 )
 
 func main() {
 	ctx := context.Background()
 	cfg := config.Load()
 
-	cleanup := otel.Setup(ctx, cfg)
+	opts := goteli.Opts{
+		ServiceName:           cfg.ServiceName,
+		LogLevel:              cfg.LogLevel,
+		IsJsonLogging:         cfg.IsJsonLogging,
+		IsTracingEnabled:      cfg.IsTracingEnabled,
+		IsMetricsEnabled:      cfg.IsMetricsEnabled,
+		GrpcCollectorEndpoint: cfg.OtelCollectorEndpoint,
+	}
+	cleanup := goteli.New(ctx, opts)
 	defer cleanup(ctx)
 
 	auth.Setup(cfg.JwkSetUri)
