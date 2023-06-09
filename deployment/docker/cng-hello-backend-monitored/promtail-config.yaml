@@ -19,3 +19,19 @@ scrape_configs:
       - source_labels: ['__meta_docker_container_name']
         regex: '/(.*)'
         target_label: 'container'
+    pipeline_stages:
+#    whatever tags you can extract from your json logs
+      - json:
+          expressions:
+            level: level
+            msg: msg
+            service: service
+            method: method
+            path: path
+            status: status
+      - labels:
+          level:
+          service:
+          method:
+          path:
+          status:

@@ -1,18 +1,8 @@
 ---
 server:
   http_listen_port: 3100
-memberlist:
-  join_members:
-    - loki:7946
-schema_config:
-  configs:
-    - from: 2021-08-01
-      store: boltdb-shipper
-      object_store: s3
-      schema: v11
-      index:
-        prefix: index_
-        period: 24h
+  #grpc_listen_port: 9095
+
 common:
   path_prefix: /loki
   replication_factor: 1
@@ -27,6 +17,21 @@ common:
   ring:
     kvstore:
       store: memberlist
+
+memberlist:
+  join_members:
+    - loki:7946
+
+schema_config:
+  configs:
+    - from: 2021-08-01
+      store: boltdb-shipper
+      object_store: s3
+      schema: v11
+      index:
+        prefix: index_
+        period: 24h
+
 ruler:
   storage:
     s3:

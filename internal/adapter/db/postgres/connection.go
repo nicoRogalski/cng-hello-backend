@@ -12,7 +12,6 @@ import (
 	"gorm.io/gorm/logger"
 )
 
-
 const (
 	maxCon = 100
 )
@@ -42,7 +41,6 @@ func InitConnection(host string, user string, password string, dbName string, po
 	if err != nil {
 		log.Fatalf("Could not connect to sql db: %v", err)
 	}
-
 
 	sqlDB.SetMaxOpenConns(maxCon)
 	sqlDB.SetMaxIdleConns(int(float64(maxCon) * 0.1))
