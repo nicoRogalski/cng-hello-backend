@@ -20,8 +20,12 @@ exporters:
     endpoint: tempo:4317
     tls:
       insecure: true
-  prometheus:
-    endpoint: "0.0.0.0:8889"
+  prometheusremotewrite:
+    endpoint: http://prometheus:9090/api/v1/write
+    headers:
+      X-Scope-OrgID: otel-collector
+    tls:
+      insecure: true
 
 service:
   # A pipeline consists of a set of receivers, processors and exporters.
@@ -33,5 +37,4 @@ service:
     metrics:
       receivers: [otlp]
       processors: [memory_limiter, batch]
-      exporters: [prometheus]
-
+      exporters: [prometheusremotewrite]
