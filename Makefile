@@ -10,7 +10,7 @@ run: app
 	@./bin/app -local
 
 compose-resources-up: 
-	docker compose -f $(rcfp) up --detach
+	docker compose -f $(rcfp) up -d
 
 compose-resources-down:
 	docker compose -f $(rcfp) down
@@ -19,7 +19,7 @@ image:
 	docker build -f $(dfp) -t cng-hello-backend --build-arg version=$$(cat VERSION) .
 
 compose-standalone-up: image
-	docker compose -f $(scfp) up --detach
+	docker compose -f $(scfp) up -d
 
 compose-standalone-down:
 	docker compose -f $(scfp) down

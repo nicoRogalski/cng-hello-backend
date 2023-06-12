@@ -18,10 +18,6 @@ common:
     kvstore:
       store: memberlist
 
-memberlist:
-  join_members:
-    - loki:7946
-
 schema_config:
   configs:
     - from: 2021-08-01

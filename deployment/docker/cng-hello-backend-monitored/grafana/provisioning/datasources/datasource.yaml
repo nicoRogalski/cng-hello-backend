@@ -26,14 +26,21 @@ datasources:
   uid: tempo
   jsonData:
     httpMethod: GET
+    lokiSearch:
+      datasourceUid: Loki
     nodeGraph:
       enabled: true
-    tracesToLogs:
-      datasourceUid: Loki
-      tags:
-        - container
     serviceMap:
       datasourceUid: prometheus
+    tracesToLogsV2:
+      customQuery: false
+      datasourceUid: Loki
+      filterByTraceID: true
+      spanEndTimeShift: ''
+      spanStartTimeShift: ''
+      tags:
+        - key: service.name
+          value: service
 - name: Loki
   type: loki
   access: proxy
