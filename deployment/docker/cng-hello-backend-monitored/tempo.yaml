@@ -29,6 +29,8 @@ metrics_generator:
 storage:
   trace:
     backend: s3                     # backend configuration to use
+    wal:
+      path: /tmp/tempo/wal             # where to store the the wal locally
     s3:
       bucket: tempo-data
       endpoint: minio:9000

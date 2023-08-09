@@ -9,9 +9,9 @@ import (
 	"github.com/rogalni/cng-hello-backend/internal/adapter/db/postgres"
 	"github.com/rogalni/cng-hello-backend/internal/adapter/rest/v1/handler"
 	"github.com/rogalni/cng-hello-backend/pkg/auth"
+	"github.com/rogalni/cng-hello-backend/pkg/telemetry"
 	"github.com/rogalni/cng-hello-backend/pkg/gin/health"
 	"github.com/rogalni/cng-hello-backend/pkg/gin/middleware"
-	"github.com/rogalni/goteli"
 	"github.com/uptrace/opentelemetry-go-extra/otelzap"
 	"go.opentelemetry.io/contrib/instrumentation/github.com/gin-gonic/gin/otelgin"
 	"gorm.io/gorm"
@@ -26,7 +26,7 @@ func main() {
 	ctx := context.Background()
 	cfg := config.Load()
 
-	opts := goteli.Opts{
+	opts := telemetry.Opts{
 		ServiceName:           cfg.ServiceName,
 		LogLevel:              cfg.LogLevel,
 		IsJsonLogging:         cfg.IsJsonLogging,
@@ -34,7 +34,7 @@ func main() {
 		IsMetricsEnabled:      cfg.IsMetricsEnabled,
 		GrpcCollectorEndpoint: cfg.OtelCollectorEndpoint,
 	}
-	cleanup := goteli.New(ctx, opts)
+	cleanup := telemetry.New(ctx, opts)
 	defer cleanup(ctx)
 
 	auth.Setup(cfg.JwkSetUri)
