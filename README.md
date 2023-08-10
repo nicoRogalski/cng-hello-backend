@@ -26,21 +26,22 @@ docker compose -f deployment/docker/cng-hello-backend-standalone/docker-compose.
 #
 
 ## 2. Thougths on the project
+### Initial thoughts
 - Is Go ready to be used in the cloud enterprise environment ?
 - Can Go detach big ship backends like java ?
 
-### 07.06.2023
-- Using otel for logs/traces/metrics with existing contrib instrumentation makes life a lot easier.  
-
 ### 20.02.2022
 - Some general packages for tracing, logging, and auth with a clean api needs to be implemented in order to not always do everything from scratch
+
+### 07.06.2023
+- Using otel for logs/traces/metrics with existing contrib instrumentation makes life a lot easier.  
 
 ## 3. Done
 ### General
 - Base go file structure (https://github.com/golang-standards/project-layout)
 - Architecture (example: https://medium.com/@matiasvarela/hexagonal-architecture-in-go-cfd4e436faa3)
 - Rest-Api (https://github.com/gin-gonic/gin)
-- Logger for json logging (https://github.com/rs/zerolog)
+- Logger for json logging (https://github.com/uber-go/zap)
 - Support for UUID
 
 ### Database
@@ -70,3 +71,6 @@ docker compose -f deployment/docker/cng-hello-backend-standalone/docker-compose.
 
 ### Error handling
 - Added general error handling and middleware for gin.
+
+## 4. Honorable mentions
+- Alternative web framework https://github.com/gofiber/fiber

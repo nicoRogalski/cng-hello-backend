@@ -37,7 +37,7 @@ func Load() *Config {
 	viper.SetDefault("JWK_SET_URI", "")
 	viper.SetDefault("OTEL_COLLECTOR_ENDPOINT", "localhost:4317")
 
-	viper.AddConfigPath("./config")
+	viper.AddConfigPath("./")
 	viper.SetConfigName("app")
 	viper.SetConfigType("env")
 
